@@ -1,12 +1,12 @@
 ﻿@model Cash_Flow_Projection.Models.Entry
 
-@using (Html.BeginForm("Add", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" ))
+@using (Html.BeginForm("Add", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.HiddenFor(model => model.id)
     @Html.ValidationSummary()
 
     <div class="form-group form-group-xlg">
-        @Html.TextBoxFor(m => m.Date, new { @class = "form-control", required = "required", placeholder = Html.DisplayNameFor(x => x.Date) })
+        @Html.EditorFor(m => m.Date, new { @class = "form-control", required = "required", placeholder = Html.DisplayNameFor(x => x.Date) })
     </div>
 
     <div class="form-group form-group-xlg">
@@ -17,5 +17,5 @@
         @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Description) })
     </div>
 
-    <button type="submit"></button>
+    <button type="submit">Add Entry</button>
 }
