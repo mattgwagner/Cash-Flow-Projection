@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Cash_Flow_Projection</title>
+    <title>@ViewData["Title"] - Cash Flow Projections</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -31,8 +31,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -41,7 +39,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - Cash_Flow_Projection</p>
+            <p>&copy; @DateTime.Today.Year - Red-Leg-Dev.com</p>
         </footer>
     </div>
 
