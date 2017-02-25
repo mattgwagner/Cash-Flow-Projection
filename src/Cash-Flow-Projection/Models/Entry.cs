@@ -6,8 +6,26 @@ using System.Linq;
 
 namespace Cash_Flow_Projection.Models
 {
+    public class Dashboard
+    {
+        private IEnumerable<Entry> entries { get; }
+
+        public Dashboard(IEnumerable<Entry> entries)
+        {
+            this.entries = entries;
+        }
+
+        [DataType(DataType.Currency)]
+        public Decimal CurrentBalance { get { return entries.BalanceAsOf(DateTime.UtcNow); } }
+    }
+
     public sealed class Entry
     {
+        /// <summary>
+        /// A unique identifer generated for the entry
+        /// </summary>
+        public String id { get; set; } = Guid.NewGuid().ToString();
+
         /// <summary>
         /// Date the entry occurred
         /// </summary>
@@ -21,6 +39,7 @@ namespace Cash_Flow_Projection.Models
         ///
         /// If the entry is a balance snapshot, this represents the balance at this point in time.
         /// </summary>
+        [DataType(DataType.Currency)]
         public Decimal Amount { get; set; }
 
         /// <summary>
@@ -31,6 +50,13 @@ namespace Cash_Flow_Projection.Models
 
     public static class Balance
     {
+        static Balance()
+        {
+            Entries.Add(new Entry { Date = new DateTime(2017, 2, 19), Amount = 2000, Description = "Balance", IsBalance = true });
+            Entries.Add(new Entry { Date = new DateTime(2017, 2, 21), Amount = -75, Description = "Meh" });
+            Entries.Add(new Entry { Date = new DateTime(2017, 2, 23), Amount = -225.34m, Description = "Mep" });
+        }
+
         public static ConcurrentBag<Entry> Entries { get; } = new ConcurrentBag<Entry>();
 
         public static IEnumerable<KeyValuePair<DateTime, Decimal>> GetDailyBalance(this IEnumerable<Entry> entries, DateTime startDate, DateTime endDate)

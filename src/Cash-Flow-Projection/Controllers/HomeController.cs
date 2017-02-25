@@ -1,26 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Cash_Flow_Projection.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Cash_Flow_Projection.Models;
 
 namespace Cash_Flow_Projection.Controllers
 {
     public class HomeController : Controller
     {
-        static HomeController()
+        public async Task<IActionResult> Index()
         {
-            Balance.Entries.Add(new Entry { Date = new DateTime(2017, 2, 19), Amount = 2000, Description = "Balance", IsBalance = true });
-            Balance.Entries.Add(new Entry { Date = new DateTime(2017, 2, 21), Amount = -75, Description = "Meh" });
-            Balance.Entries.Add(new Entry { Date = new DateTime(2017, 2, 23), Amount = -225.34m, Description = "Mep" });
+            return Json(new Dashboard(Balance.Entries));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> ByMonth(int month, int year)
         {
-            var results = Balance.Entries.GetDailyBalance(new DateTime(2017, 2, 20), DateTime.Today);
+            // Cash at beginning of month
 
-            return Json(results);
+            // Projections for each day of the month?
+
+            // Income vs Expenses
+
+            // Ending balance (excess/deficit of cash)
+
+            return View();
+        }
+
+        public IActionResult Add()
+        {
+            return View(new Entry { });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(Entry entry)
+        {
+            Balance.Entries.Add(entry);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(String id)
+        {
+            Entry entry = Balance.Entries.Single(_ => _.id == id);
+
+            return Json(new { success = Balance.Entries.TryTake(out entry) });
         }
 
         public IActionResult Error()
