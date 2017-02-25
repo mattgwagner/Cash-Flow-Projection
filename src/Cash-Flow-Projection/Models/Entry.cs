@@ -8,16 +8,10 @@ namespace Cash_Flow_Projection.Models
 {
     public class Dashboard
     {
-        private IEnumerable<Entry> entries { get; }
-
-        public Dashboard(IEnumerable<Entry> entries)
-        {
-            this.entries = entries;
-        }
+        public IEnumerable<Entry> Entries { get; set; }
 
         [DataType(DataType.Currency)]
-        public Decimal CurrentBalance { get { return entries.BalanceAsOf(DateTime.UtcNow); } }
-        
+        public Decimal CurrentBalance { get { return Entries.BalanceAsOf(DateTime.UtcNow); } }
     }
 
     public sealed class Entry

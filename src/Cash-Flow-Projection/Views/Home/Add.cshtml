@@ -17,5 +17,9 @@
         @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Description) })
     </div>
 
+    <div class="form-group form-group-xlg">
+        @Html.EditorFor(m => m.IsBalance, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.IsBalance) })
+    </div>
+
     <button type="submit">Add Entry</button>
 }
