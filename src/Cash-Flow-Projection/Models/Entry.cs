@@ -69,6 +69,16 @@ namespace Cash_Flow_Projection.Models
 
         public static ConcurrentBag<Entry> Entries { get; } = new ConcurrentBag<Entry>();
 
+        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, DateTime? asOf = null)
+        {
+            return
+                entries
+                .Where(entry => entry.IsBalance)
+                .Where(entry => entry.Date <= (asOf ?? DateTime.UtcNow))
+                .OrderByDescending(entry => entry.Date)
+                .FirstOrDefault();
+        }
+
         public static IEnumerable<KeyValuePair<DateTime, Decimal>> GetDailyBalance(this IEnumerable<Entry> entries, DateTime startDate, DateTime endDate)
         {
             if (startDate >= endDate) throw new ArgumentOutOfRangeException("startDate should before endDate");
@@ -85,28 +95,14 @@ namespace Cash_Flow_Projection.Models
 
         public static Decimal BalanceAsOf(this IEnumerable<Entry> entries, DateTime asOf)
         {
-            var last_balance_entry =
-                entries
-                .Where(entry => entry.IsBalance)
-                .Where(entry => entry.Date <= asOf)
-                .OrderByDescending(entry => entry.Date)
-                .FirstOrDefault();
-
-            if (last_balance_entry == null)
-            {
-                // This shouldn't happen, since we should always start with the initial balance?
-
-                throw new Exception("No balance entries found in entry list!");
-            }
-
             var delta_since_last_balance =
                 entries
                 .Where(entry => !entry.IsBalance)
-                .Where(entry => entry.Date >= last_balance_entry.Date)
+                .Where(entry => entry.Date >= GetLastBalanceEntry(entries, asOf).Date)
                 .Where(entry => entry.Date <= asOf)
                 .Sum(entry => entry.Amount);
 
-            return last_balance_entry.Amount + delta_since_last_balance;
+            return GetLastBalanceEntry(entries, asOf).Amount + delta_since_last_balance;
         }
     }
 }
