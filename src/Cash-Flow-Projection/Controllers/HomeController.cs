@@ -10,7 +10,7 @@ namespace Cash_Flow_Projection.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            return Json(new Dashboard(Balance.Entries));
+            return View(new Dashboard(Balance.Entries));
         }
 
         public async Task<IActionResult> ByMonth(int month, int year)
