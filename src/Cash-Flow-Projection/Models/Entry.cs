@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,6 +24,8 @@ namespace Cash_Flow_Projection.Models
 
     public static class Balance
     {
+        public static ConcurrentBag<Entry> Entries { get; } = new ConcurrentBag<Entry>();
+
         public static IEnumerable<KeyValuePair<DateTime, Decimal>> GetDailyBalance(this IEnumerable<Entry> entries, DateTime startDate, DateTime endDate)
         {
             if (startDate >= endDate) throw new ArgumentOutOfRangeException("startDate should before endDate");
@@ -42,7 +45,7 @@ namespace Cash_Flow_Projection.Models
             var last_balance_entry =
                 entries
                 .Where(entry => entry.IsBalance)
-                .Where(entry => entry.Date < asOf)
+                .Where(entry => entry.Date <= asOf)
                 .OrderByDescending(entry => entry.Date)
                 .FirstOrDefault();
 
@@ -55,11 +58,12 @@ namespace Cash_Flow_Projection.Models
 
             var delta_since_last_balance =
                 entries
+                .Where(entry => !entry.IsBalance)
                 .Where(entry => entry.Date >= last_balance_entry.Date)
                 .Where(entry => entry.Date <= asOf)
                 .Sum(entry => entry.Amount);
 
-            return last_balance_entry.Amount - delta_since_last_balance;
+            return last_balance_entry.Amount + delta_since_last_balance;
         }
     }
 }
