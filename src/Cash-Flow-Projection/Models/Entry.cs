@@ -69,6 +69,8 @@ namespace Cash_Flow_Projection.Models
 
         public static ConcurrentBag<Entry> Entries { get; } = new ConcurrentBag<Entry>();
 
+        public static IEnumerable<Entry> Project_Since_Last_Balanace { get { return Entries.Where(_ => _.Date >= GetLastBalanceEntry(Entries).Date); } }
+
         public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, DateTime? asOf = null)
         {
             return
