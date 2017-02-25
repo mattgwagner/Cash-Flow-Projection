@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Cash_Flow_Projection.Models
 {
-    public class Entry
+    public sealed class Entry
     {
         /// <summary>
-        /// When the entry occurred
+        /// Date the entry occurred
         /// </summary>
-        public DateTime Date { get; set; } = DateTime.UtcNow;
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; } = DateTime.Today;
 
         public String Description { get; set; }
 
+        /// <summary>
+        /// The amount of the transaction, negative represents cash expenditures, positive represents income.
+        ///
+        /// If the entry is a balance snapshot, this represents the balance at this point in time.
+        /// </summary>
         public Decimal Amount { get; set; }
 
         /// <summary>
-        /// If true, this entry denotes the balance at the given datetime
+        /// If true, this entry denotes the snapshot cash balance at the given datetime
         /// </summary>
         public Boolean IsBalance { get; set; }
     }
