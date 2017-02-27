@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,9 +8,6 @@ namespace Cash_Flow_Projection.Models
     public class Dashboard
     {
         public IEnumerable<Entry> Entries { get; set; }
-
-        [DataType(DataType.Currency)]
-        public Decimal CurrentBalance { get { return Entries.BalanceAsOf(DateTime.UtcNow); } }
     }
 
     public sealed class Entry
@@ -45,10 +41,6 @@ namespace Cash_Flow_Projection.Models
 
     public static class Balance
     {
-        public static ConcurrentBag<Entry> Entries { get; } = new ConcurrentBag<Entry>();
-
-        public static IEnumerable<Entry> Project_Since_Last_Balanace { get { return Entries.Where(_ => _.Date >= GetLastBalanceEntry(Entries).Date); } }
-
         public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, DateTime? asOf = null)
         {
             return
