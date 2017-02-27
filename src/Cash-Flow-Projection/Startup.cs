@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Cash_Flow_Projection.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ namespace Cash_Flow_Projection
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<Database>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

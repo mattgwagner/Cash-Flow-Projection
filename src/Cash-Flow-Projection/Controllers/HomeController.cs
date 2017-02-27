@@ -8,9 +8,16 @@ namespace Cash_Flow_Projection.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly Database db;
+
+        public HomeController(Database db)
+        {
+            this.db = db;
+        }
+
         public async Task<IActionResult> Index()
         {
-            return View(new Dashboard { Entries = Balance.Project_Since_Last_Balanace });
+            return View(new Dashboard { Entries = db.Entries });
         }
 
         public async Task<IActionResult> ByMonth(int month, int year)
@@ -34,7 +41,9 @@ namespace Cash_Flow_Projection.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(Entry entry)
         {
-            Balance.Entries.Add(entry);
+            db.Entries.Add(entry);
+
+            db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
@@ -42,9 +51,13 @@ namespace Cash_Flow_Projection.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(String id)
         {
-            Entry entry = Balance.Entries.Single(_ => _.id == id);
+            var entry = db.Entries.Single(_ => _.id == id);
 
-            return Json(new { success = Balance.Entries.TryTake(out entry) });
+            db.Entries.Remove(entry);
+
+            db.SaveChanges();
+
+            return Json(new { success = true });
         }
 
         public IActionResult Error()

@@ -45,28 +45,6 @@ namespace Cash_Flow_Projection.Models
 
     public static class Balance
     {
-        static Balance()
-        {
-            Entries.Add(new Entry { Date = new DateTime(2017, 2, 24), Amount = 6279.06m, Description = "Balance", IsBalance = true });
-            Entries.Add(new Entry { Date = new DateTime(2017, 2, 28), Amount = -64, Description = "Check" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -50, Description = "Amanda" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -1900, Description = "Mortgage" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -71.84m, Description = "Car Insurance" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -300, Description = "Tuition" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 3), Amount = -359.65m, Description = "USAA Loan" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 3), Amount = -100, Description = "529 Plan Contrib" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 4), Amount = -291.74m, Description = "Car Payment" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 8), Amount = -50, Description = "Amanda" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 9), Amount = -140.79m, Description = "Electric" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 10), Amount = 3021.65m, Description = "PayDay" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 14), Amount = -123.04m, Description = "Spectrum" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 15), Amount = -120, Description = "Lawn" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 15), Amount = -50, Description = "Amanda" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 15), Amount = -71.84m, Description = "Car Insurance" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 6), Amount = -87.59m, Description = "Dental" });
-            Entries.Add(new Entry { Date = new DateTime(2017, 3, 22), Amount = -50, Description = "Amanda" });
-        }
-
         public static ConcurrentBag<Entry> Entries { get; } = new ConcurrentBag<Entry>();
 
         public static IEnumerable<Entry> Project_Since_Last_Balanace { get { return Entries.Where(_ => _.Date >= GetLastBalanceEntry(Entries).Date); } }
