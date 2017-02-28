@@ -23,8 +23,8 @@ namespace Cash_Flow_Projection.Models
 
             if (!db.Entries.Any())
             {
-                db.Entries.Add(new Entry { Date = new DateTime(2017, 2, 24), Amount = 6279.06m, Description = "Balance", IsBalance = true });
-                db.Entries.Add(new Entry { Date = new DateTime(2017, 2, 28), Amount = -64, Description = "Check" });
+                db.Entries.Add(new Entry { Date = new DateTime(2017, 2, 27), Amount = 6228.27m, Description = "Balance", IsBalance = true });
+                db.Entries.Add(new Entry { Date = new DateTime(2017, 2, 28), Amount = -64, Description = "Bri Check" });
                 db.Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -50, Description = "Amanda" });
                 db.Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -1900, Description = "Mortgage" });
                 db.Entries.Add(new Entry { Date = new DateTime(2017, 3, 1), Amount = -71.84m, Description = "Car Insurance" });
