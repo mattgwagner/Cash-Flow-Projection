@@ -58,7 +58,7 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(String id)
         {
             var entry = db.Entries.Single(_ => _.id == id);
@@ -67,7 +67,7 @@ namespace Cash_Flow_Projection.Controllers
 
             db.SaveChanges();
 
-            return Json(new { success = true });
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Error()

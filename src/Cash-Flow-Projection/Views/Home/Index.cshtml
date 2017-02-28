@@ -12,6 +12,12 @@
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td>@Html.DisplayFor(_ => entry.Amount)</td>
             <td>@Cash_Flow_Projection.Models.Balance.BalanceAsOf(Model.Entries, entry.Date)</td>
+            <td>
+                @using (Html.BeginForm("Delete", "Home", new { id = entry.id }, FormMethod.Post))
+                {
+                    <button type="submit">Delete</button>
+                }
+            </td>
         </tr>
 
     }
