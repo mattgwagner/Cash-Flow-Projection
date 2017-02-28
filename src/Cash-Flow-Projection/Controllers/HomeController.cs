@@ -17,7 +17,17 @@ namespace Cash_Flow_Projection.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(new Dashboard { Entries = db.Entries });
+            var last_balance = db.Entries.GetLastBalanceEntry();
+
+            var entries = from entry in db.Entries
+                          where entry.Date >= last_balance.Date
+                          orderby entry.Date descending
+                          select entry;
+
+            return View(new Dashboard
+            {
+                Entries = entries
+            });
         }
 
         public async Task<IActionResult> ByMonth(int month, int year)
