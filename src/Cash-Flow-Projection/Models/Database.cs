@@ -19,7 +19,7 @@ namespace Cash_Flow_Projection.Models
             {
                 // Check if table exists, create if not
 
-                db.Database.ExecuteSqlCommand("create table if not exists Entries (id text, Date datetime, Description text, Amount decimal, IsBalance boolean)");
+                db.Database.ExecuteSqlCommand("create table if not exists Entries (id text, Date datetime, Description text, Amount decimal, IsBalance boolean");
 
                 // Seed database(?)
 
