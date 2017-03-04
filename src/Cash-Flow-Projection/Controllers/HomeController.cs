@@ -1,4 +1,8 @@
 ﻿using Cash_Flow_Projection.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -6,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cash_Flow_Projection.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly Database db;
@@ -14,6 +19,7 @@ namespace Cash_Flow_Projection.Controllers
         {
             this.db = db;
         }
+        
 
         public async Task<IActionResult> Index()
         {
@@ -68,6 +74,22 @@ namespace Cash_Flow_Projection.Controllers
             db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [AllowAnonymous]
+        public IActionResult Login(String returnUrl = "/")
+        {
+            return new ChallengeResult("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
+        }
+
+        public async Task Logout()
+        {
+            await HttpContext.Authentication.SignOutAsync("Auth0", new AuthenticationProperties
+            {
+                RedirectUri = Url.Action(nameof(Index))
+            });
+
+            await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public IActionResult Error()
