@@ -67,7 +67,7 @@ namespace Cash_Flow_Projection
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AutomaticChallenge = true,
-                LoginPath = new PathString("~/Login")
+                LoginPath = new PathString("/Home/Login")
             });
 
             var options = new OpenIdConnectOptions("Auth0")

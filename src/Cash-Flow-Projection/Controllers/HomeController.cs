@@ -137,7 +137,7 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [AllowAnonymous, Route("~/Login")]
+        [AllowAnonymous]
         public IActionResult Login(String returnUrl = "/")
         {
             return new ChallengeResult("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
