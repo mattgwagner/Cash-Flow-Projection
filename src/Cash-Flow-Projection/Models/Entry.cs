@@ -10,12 +10,7 @@ namespace Cash_Flow_Projection.Models
         public IEnumerable<Entry> Entries { get; set; }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CurrentBalance
-        {
-            // There should be at most one balance entry
-
-            get { return Entries.Where(_ => _.IsBalance).Select(_ => _.Amount).SingleOrDefault(); }
-        }
+        public virtual Decimal? CurrentBalance { get { return Entries.CurrentBalance(); } }
     }
 
     public sealed class Entry
@@ -49,40 +44,40 @@ namespace Cash_Flow_Projection.Models
 
     public static class Balance
     {
-        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, DateTime? asOf = null)
+        public static Decimal CurrentBalance(this IEnumerable<Entry> entries)
+        {
+            return GetLastBalanceEntry(entries)?.Amount ?? Decimal.Zero;
+        }
+
+        public static IEnumerable<Entry> SinceBalance(this IEnumerable<Entry> entries)
+        {
+            // Includes the last balance entry
+
+            return
+                entries
+                .Where(entry => entry.Date >= GetLastBalanceEntry(entries)?.Date)
+                .OrderBy(entry => entry.Date);
+        }
+
+        private static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries)
         {
             return
                 entries
                 .Where(entry => entry.IsBalance)
-                .Where(entry => entry.Date <= (asOf ?? DateTime.UtcNow))
                 .OrderByDescending(entry => entry.Date)
                 .FirstOrDefault();
         }
 
-        public static IEnumerable<KeyValuePair<DateTime, Decimal>> GetDailyBalance(this IEnumerable<Entry> entries, DateTime startDate, DateTime endDate)
-        {
-            if (startDate >= endDate) throw new ArgumentOutOfRangeException("startDate should before endDate");
-
-            var current = startDate;
-
-            while (current < endDate)
-            {
-                yield return new KeyValuePair<DateTime, Decimal>(current, BalanceAsOf(entries, current));
-
-                current = current.AddDays(1);
-            }
-        }
-
-        public static Decimal BalanceAsOf(this IEnumerable<Entry> entries, DateTime asOf)
+        public static Decimal GetBalanceOn(this IEnumerable<Entry> entries, DateTime asOf)
         {
             var delta_since_last_balance =
                 entries
                 .Where(entry => !entry.IsBalance)
-                .Where(entry => entry.Date >= GetLastBalanceEntry(entries, asOf).Date)
+                .Where(entry => entry.Date >= GetLastBalanceEntry(entries).Date)
                 .Where(entry => entry.Date <= asOf)
                 .Sum(entry => entry.Amount);
 
-            return GetLastBalanceEntry(entries, asOf).Amount + delta_since_last_balance;
+            return CurrentBalance(entries) + delta_since_last_balance;
         }
     }
 }

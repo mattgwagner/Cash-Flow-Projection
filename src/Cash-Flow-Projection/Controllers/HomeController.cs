@@ -20,19 +20,31 @@ namespace Cash_Flow_Projection.Controllers
             this.db = db;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var last_balance = db.Entries.GetLastBalanceEntry();
-
-            var entries = from entry in db.Entries
-                          where entry.Date >= last_balance.Date
-                          orderby entry.Date descending
-                          select entry;
-
             return View(new Dashboard
             {
-                Entries = entries
+                Entries = db.Entries.SinceBalance()
             });
+        }
+
+        public IActionResult ForChart()
+        {
+            var entries = db.Entries.SinceBalance();
+
+            var data =
+                entries
+                .Where(entry => entry.IsBalance == false)
+                .GroupBy(entry => entry.Date.Date)
+                .OrderBy(group => group.Key)
+                .Select(group => new
+                {
+                    Date = group.Key,
+                    Balance = entries.GetBalanceOn(group.Key)
+                })
+                .ToList();
+
+            return Json(data);
         }
 
         public async Task<IActionResult> ByMonth(int month, int year)
