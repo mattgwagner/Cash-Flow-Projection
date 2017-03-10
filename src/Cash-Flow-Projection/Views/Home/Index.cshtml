@@ -71,30 +71,28 @@
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart);
 
+        var result = JSON.parse('@Html.Raw(Model.ChartData)');
+
         function drawChart() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
 
-            $.getJSON('@Url.Action("ForChart")', function (result) {
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'Balance ($)');
 
-                // Create the data table.
-                var data = new google.visualization.DataTable();
+            for (var i = 0; i < result.length; i++)
+            {
+                data.addRow([new Date(result[i].Date), result[i].Balance]);
+            }
 
-                data.addColumn('date', 'Date');
-                data.addColumn('number', 'Balance ($)');
+            var options = {
+                title: 'Projected Balance',
+                legend: { position: 'bottom' }
+            };
 
-                for (var i = 0; i < result.length; i++)
-                {
-                    data.addRow([new Date(result[i].date), result[i].balance]);
-                }
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 
-                var options = {
-                    title: 'Account Balance',
-                    legend: { position: 'bottom' }
-                };
-
-                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-                chart.draw(data, options);
-            });
+            chart.draw(data, options);
         }
     </script>
 }

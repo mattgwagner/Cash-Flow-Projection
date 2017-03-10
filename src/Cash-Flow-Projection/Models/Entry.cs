@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,26 @@ namespace Cash_Flow_Projection.Models
 
         [DataType(DataType.Currency)]
         public virtual Decimal? CurrentBalance { get { return Entries.CurrentBalance(); } }
+
+        public virtual String ChartData
+        {
+            get
+            {
+                var entries =
+                    Entries
+                     .Where(entry => entry.IsBalance == false)
+                     .GroupBy(entry => entry.Date.Date)
+                     .OrderBy(group => group.Key)
+                     .Select(group => new
+                     {
+                         Date = group.Key.ToString("yyyy-MM-dd"),
+                         Balance = Entries.GetBalanceOn(group.Key)
+                     })
+                     .ToList();
+
+                return JsonConvert.SerializeObject(entries);
+            }
+        }
     }
 
     public sealed class Entry
