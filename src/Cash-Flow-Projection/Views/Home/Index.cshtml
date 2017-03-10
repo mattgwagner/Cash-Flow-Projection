@@ -4,6 +4,13 @@
     ViewData["Title"] = "Home Page";
 }
 
+@using (Html.BeginForm("Balance", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <input type="text" id="balance" placeholder="Set Balance" />
+    <button type="submit">Set</button>
+}
+
 <table class="table table-striped">
     @foreach (var entry in Model.Entries.OrderBy(_ => _.Date))
     {
@@ -20,6 +27,5 @@
                 }
             </td>
         </tr>
-
     }
 </table>
