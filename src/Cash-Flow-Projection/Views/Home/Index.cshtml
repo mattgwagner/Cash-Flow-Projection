@@ -13,6 +13,12 @@
 
 <h3>Current Balance: @Html.DisplayFor(model => model.CurrentBalance)</h3>
 
+<hr />
+
+<div id="chart_div"></div>
+
+<hr />
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -27,7 +33,7 @@
 
     @foreach (var entry in Model.Entries.Where(_ => !_.IsBalance).OrderBy(_ => _.Date))
     {
-        var balance = Cash_Flow_Projection.Models.Balance.BalanceAsOf(Model.Entries, entry.Date);
+        var balance = Cash_Flow_Projection.Models.Balance.GetBalanceOn(Model.Entries, entry.Date);
 
         var contextual = balance < 0 ? "danger" : balance < 500 ? "warning" : "";
 
@@ -53,3 +59,42 @@
         </tr>
     }
 </table>
+
+@section Scripts
+{
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            $.getJSON('@Url.Action("ForChart")', function (result) {
+
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+
+                data.addColumn('date', 'Date');
+                data.addColumn('number', 'Balance ($)');
+
+                for (var i = 0; i < result.length; i++)
+                {
+                    data.addRow([new Date(result[i].date), result[i].balance]);
+                }
+
+                var options = {
+                    title: 'Account Balance',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+                chart.draw(data, options);
+            });
+        }
+    </script>
+}

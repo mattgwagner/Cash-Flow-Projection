@@ -39,7 +39,7 @@ namespace Cash_Flow_Projection.Controllers
                 .OrderBy(group => group.Key)
                 .Select(group => new
                 {
-                    Date = group.Key,
+                    Date = group.Key.ToString("yyyy-MM-dd"),
                     Balance = entries.GetBalanceOn(group.Key)
                 })
                 .ToList();
