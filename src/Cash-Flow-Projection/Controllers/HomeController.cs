@@ -66,6 +66,18 @@ namespace Cash_Flow_Projection.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Postpone(string id)
+        {
+            var entry = db.Entries.Single(_ => _.id == id);
+
+            entry.Date = DateTime.Today.AddDays(1);
+
+            await db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Entry entry)
         {
             db.Entries.Add(entry);
