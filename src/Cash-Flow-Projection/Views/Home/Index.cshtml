@@ -87,7 +87,8 @@
 
             var options = {
                 title: 'Projected Balance',
-                legend: { position: 'bottom' }
+                legend: { position: 'bottom' },
+                vAxis: { format: 'currency' }
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
