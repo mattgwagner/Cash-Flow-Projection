@@ -43,7 +43,7 @@ namespace Cash_Flow_Projection.Models
 
         public Decimal Amount { get; set; }
 
-        public int RepeatInterval { get; set; }
+        public int RepeatInterval { get; set; } = 1;
 
         public RepeatUnit Unit { get; set; } = RepeatUnit.Days;
 
