@@ -77,7 +77,7 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Route("~/Add")]
         public async Task<IActionResult> Add(Entry entry)
         {
             db.Entries.Add(entry);
@@ -87,7 +87,7 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Route("~/Repeating")]
         public async Task<IActionResult> Repeating(RepeatingEntry entry)
         {
             DateTime current = entry.FirstDate;
