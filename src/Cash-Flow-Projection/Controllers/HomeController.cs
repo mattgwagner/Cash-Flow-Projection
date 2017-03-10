@@ -60,7 +60,7 @@ namespace Cash_Flow_Projection.Controllers
             {
                 Amount = balance,
                 IsBalance = true,
-                Description = String.Empty,
+                Description = "BALANCE",
                 Date = DateTime.UtcNow
             });
         }

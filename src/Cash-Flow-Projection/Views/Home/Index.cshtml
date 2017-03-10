@@ -20,19 +20,18 @@
             <td>@Html.DisplayFor(_ => entry.Amount)</td>
             <td>@Cash_Flow_Projection.Models.Balance.BalanceAsOf(Model.Entries, entry.Date)</td>
             <td>
-                <div class="input-group" role="group">
-                    @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-default">Postpone</button>
-                    }
-
-                    @using (Html.BeginForm("Delete", "Home", new { entry.id }, FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    }
-                </div>
+                @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-default">Postpone</button>
+                }
+            </td>
+            <td>
+                @using (Html.BeginForm("Delete", "Home", new { entry.id }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                }
             </td>
         </tr>
     }
