@@ -7,7 +7,7 @@
 @using (Html.BeginForm("Balance", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <input type="text" id="balance" placeholder="Set Balance" />
+    <input type="text" name="balance" placeholder="Set Balance" />
     <button type="submit">Set</button>
 }
 
