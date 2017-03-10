@@ -41,11 +41,13 @@ namespace Cash_Flow_Projection.Controllers
             return View();
         }
 
+        [Route("~/Add")]
         public IActionResult Add()
         {
             return View(new Entry { });
         }
 
+        [Route("~/Repeating")]
         public IActionResult Repeating()
         {
             return View(new RepeatingEntry { });
@@ -135,12 +137,13 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [AllowAnonymous]
+        [AllowAnonymous, Route("~/Login")]
         public IActionResult Login(String returnUrl = "/")
         {
             return new ChallengeResult("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
         }
 
+        [Route("~/Logout")]
         public async Task Logout()
         {
             await HttpContext.Authentication.SignOutAsync("Auth0", new AuthenticationProperties
