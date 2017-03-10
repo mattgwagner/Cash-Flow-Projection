@@ -8,6 +8,14 @@ namespace Cash_Flow_Projection.Models
     public class Dashboard
     {
         public IEnumerable<Entry> Entries { get; set; }
+
+        [DataType(DataType.Currency)]
+        public virtual Decimal? CurrentBalance
+        {
+            // There should be at most one balance entry
+
+            get { return Entries.Where(_ => _.IsBalance).Select(_ => _.Amount).SingleOrDefault(); }
+        }
     }
 
     public sealed class Entry
