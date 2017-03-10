@@ -28,25 +28,6 @@ namespace Cash_Flow_Projection.Controllers
             });
         }
 
-        public IActionResult ForChart()
-        {
-            var entries = db.Entries.SinceBalance();
-
-            var data =
-                entries
-                .Where(entry => entry.IsBalance == false)
-                .GroupBy(entry => entry.Date.Date)
-                .OrderBy(group => group.Key)
-                .Select(group => new
-                {
-                    Date = group.Key.ToString("yyyy-MM-dd"),
-                    Balance = entries.GetBalanceOn(group.Key)
-                })
-                .ToList();
-
-            return Json(data);
-        }
-
         public async Task<IActionResult> ByMonth(int month, int year)
         {
             // Cash at beginning of month
