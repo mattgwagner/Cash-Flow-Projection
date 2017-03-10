@@ -95,13 +95,14 @@ namespace Cash_Flow_Projection.Models
             return GetLastBalanceEntry(entries)?.Amount ?? Decimal.Zero;
         }
 
-        public static IEnumerable<Entry> SinceBalance(this IEnumerable<Entry> entries)
+        public static IEnumerable<Entry> SinceBalance(this IEnumerable<Entry> entries, DateTime end)
         {
             // Includes the last balance entry
 
             return
                 entries
                 .Where(entry => entry.Date >= GetLastBalanceEntry(entries)?.Date)
+                .Where(entry => entry.Date < end)
                 .OrderBy(entry => entry.Date)
                 .ToList();
         }
