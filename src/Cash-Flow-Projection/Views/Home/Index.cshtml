@@ -15,6 +15,7 @@
             <td>
                 @using (Html.BeginForm("Delete", "Home", new { id = entry.id }, FormMethod.Post))
                 {
+                    @Html.AntiForgeryToken()
                     <button type="submit">Delete</button>
                 }
             </td>

@@ -3,6 +3,7 @@
 @using (Html.BeginForm("Add", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.HiddenFor(model => model.id)
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
     <div class="form-group form-group-xlg">

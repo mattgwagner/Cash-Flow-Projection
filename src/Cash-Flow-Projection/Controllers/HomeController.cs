@@ -55,6 +55,7 @@ namespace Cash_Flow_Projection.Controllers
         }
 
         [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Entry entry)
         {
             db.Entries.Add(entry);
@@ -64,7 +65,7 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(String id)
         {
             var entry = db.Entries.Single(_ => _.id == id);
