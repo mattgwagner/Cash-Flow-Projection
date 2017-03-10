@@ -34,6 +34,31 @@ namespace Cash_Flow_Projection.Models
         }
     }
 
+    public class RepeatingEntry
+    {
+        [DataType(DataType.Date)]
+        public DateTime FirstDate { get; set; } = DateTime.Today;
+
+        public String Description { get; set; }
+
+        public Decimal Amount { get; set; }
+
+        public int RepeatInterval { get; set; }
+
+        public RepeatUnit Unit { get; set; } = RepeatUnit.Days;
+
+        public int RepeatIterations { get; set; } = 10;
+
+        public enum RepeatUnit
+        {
+            Days,
+
+            Weeks,
+
+            Months
+        }
+    }
+
     public sealed class Entry
     {
         /// <summary>

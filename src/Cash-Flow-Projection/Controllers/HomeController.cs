@@ -46,6 +46,11 @@ namespace Cash_Flow_Projection.Controllers
             return View(new Entry { });
         }
 
+        public IActionResult Repeating()
+        {
+            return View(new RepeatingEntry { });
+        }
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Balance(Decimal balance)
         {
@@ -74,6 +79,44 @@ namespace Cash_Flow_Projection.Controllers
         public async Task<IActionResult> Add(Entry entry)
         {
             db.Entries.Add(entry);
+
+            await db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Repeating(RepeatingEntry entry)
+        {
+            DateTime current = entry.FirstDate;
+
+            foreach (var iteration in Enumerable.Range(1, entry.RepeatIterations))
+            {
+                db.Entries.Add(new Entry
+                {
+                    Amount = entry.Amount,
+                    Description = entry.Description,
+                    Date = current
+                });
+
+                switch (entry.Unit)
+                {
+                    case RepeatingEntry.RepeatUnit.Days:
+                        current = current.AddDays(entry.RepeatInterval);
+                        break;
+
+                    case RepeatingEntry.RepeatUnit.Weeks:
+                        current = current.AddDays(7 * entry.RepeatInterval);
+                        break;
+
+                    case RepeatingEntry.RepeatUnit.Months:
+                        current = current.AddMonths(entry.RepeatInterval);
+                        break;
+
+                    default:
+                        throw new Exception("Unknown repeat unit!");
+                }
+            }
 
             await db.SaveChangesAsync();
 
