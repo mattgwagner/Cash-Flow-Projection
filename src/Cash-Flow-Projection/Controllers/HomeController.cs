@@ -82,7 +82,7 @@ namespace Cash_Flow_Projection.Controllers
 
             db.Entries.Remove(entry);
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
