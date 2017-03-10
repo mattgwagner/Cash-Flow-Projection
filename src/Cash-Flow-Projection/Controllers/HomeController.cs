@@ -19,7 +19,6 @@ namespace Cash_Flow_Projection.Controllers
         {
             this.db = db;
         }
-        
 
         public async Task<IActionResult> Index()
         {
@@ -54,7 +53,18 @@ namespace Cash_Flow_Projection.Controllers
             return View(new Entry { });
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Balance(Decimal balance)
+        {
+            return await Add(new Entry
+            {
+                Amount = balance,
+                IsBalance = true,
+                Description = String.Empty,
+                Date = DateTime.UtcNow
+            });
+        }
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Entry entry)
         {
