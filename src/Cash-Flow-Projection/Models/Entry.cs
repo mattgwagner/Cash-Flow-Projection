@@ -13,6 +13,9 @@ namespace Cash_Flow_Projection.Models
         [DataType(DataType.Currency)]
         public virtual Decimal? CurrentBalance { get { return Entries.CurrentBalance(); } }
 
+        [DataType(DataType.Date)]
+        public virtual DateTime? BalanceAsOf { get { return Entries.GetLastBalanceEntry()?.Date; } }
+
         public virtual String ChartData
         {
             get
@@ -107,7 +110,7 @@ namespace Cash_Flow_Projection.Models
                 .ToList();
         }
 
-        private static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries)
+        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries)
         {
             return
                 entries
