@@ -33,6 +33,8 @@
 
     @foreach (var entry in Model.Entries.Where(_ => !_.IsBalance).OrderBy(_ => _.Date))
     {
+        var income = entry.Amount > 0 ? "success" : "";
+
         var balance = Cash_Flow_Projection.Models.Balance.GetBalanceOn(Model.Entries, entry.Date);
 
         var contextual = balance < 0 ? "danger" : balance < 500 ? "warning" : "";
@@ -41,7 +43,7 @@
             <td>@Html.DisplayFor(_ => entry.Date)</td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td>@Html.DisplayFor(_ => entry.Amount)</td>
-            <td>@balance.ToString("C")</td>
+            <td class="@income">@balance.ToString("C")</td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
