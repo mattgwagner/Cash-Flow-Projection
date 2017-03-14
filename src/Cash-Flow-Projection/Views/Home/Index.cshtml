@@ -42,8 +42,8 @@
         <tr class="@contextual">
             <td>@Html.DisplayFor(_ => entry.Date)</td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
-            <td>@Html.DisplayFor(_ => entry.Amount)</td>
-            <td class="@income">@balance.ToString("C")</td>
+            <td class="@income">@Html.DisplayFor(_ => entry.Amount)</td>
+            <td>@balance.ToString("C")</td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
