@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,8 @@ namespace Cash_Flow_Projection
 {
     public class Startup
     {
+        private static Boolean IsDevelopment;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -24,6 +27,7 @@ namespace Cash_Flow_Projection
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            IsDevelopment = env.IsDevelopment();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -35,7 +39,13 @@ namespace Cash_Flow_Projection
             services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                if (!IsDevelopment)
+                {
+                    options.Filters.Add(new RequireHttpsAttribute { });
+                }
+            });
 
             // Add functionality to inject IOptions<T>
             services.AddOptions();
