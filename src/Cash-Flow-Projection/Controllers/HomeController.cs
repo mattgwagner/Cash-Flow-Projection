@@ -157,7 +157,7 @@ namespace Cash_Flow_Projection.Controllers
                 {
                     DtStart = new CalDateTime(@event.Date),
                     IsAllDay = true,
-                    Description = $"{@event.Description} {@event.Amount:c}"
+                    Summary = $"{@event.Description} {@event.Amount:c}"
                 })
                 .ToList()
                 .ForEach(@event => calendar.Events.Add(@event));
