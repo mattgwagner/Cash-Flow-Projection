@@ -1,4 +1,8 @@
 ﻿using Cash_Flow_Projection.Models;
+using Ical.Net;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization;
+using Ical.Net.Serialization.iCalendar.Serializers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -135,6 +139,38 @@ namespace Cash_Flow_Projection.Controllers
             await db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [AllowAnonymous, Route("~/Calendar")]
+        public async Task<IActionResult> Calendar(String apikey)
+        {
+            // Verify API key
+
+            // Build model
+
+            var calendar = new Calendar();
+
+            db
+                .Entries
+                .SinceBalance(DateTime.Today.AddMonths(3))
+                .Select(@event => new CalendarEvent
+                {
+                    DtStart = new CalDateTime(@event.Date),
+                    IsAllDay = true,
+                    Description = $"{@event.Description} {@event.Amount:c}"
+                })
+                .ToList()
+                .ForEach(@event => calendar.Events.Add(@event));
+
+            var serializer = new CalendarSerializer(new SerializationContext());
+
+            var serialized = serializer.SerializeToString(calendar);
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(serialized);
+
+            // Return iCal Feed
+
+            return File(bytes, "text/calendar");
         }
 
         [AllowAnonymous]
