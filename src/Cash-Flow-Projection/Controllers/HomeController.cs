@@ -23,11 +23,11 @@ namespace Cash_Flow_Projection.Controllers
             this.db = db;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(DateTime? thru)
         {
             return View(new Dashboard
             {
-                Entries = db.Entries.SinceBalance(DateTime.Today.AddMonths(3))
+                Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(3))
             });
         }
 
