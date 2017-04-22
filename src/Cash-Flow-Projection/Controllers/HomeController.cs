@@ -140,6 +140,20 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> DeleteMatching(String description)
+        {
+            // Based on how we're doing repeating, this is the only way to clean up miskeyed data
+
+            foreach (var e in db.Entries.Where(entry => entry.Description == description))
+            {
+                db.Entries.Remove(e);
+            }
+
+            await db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [AllowAnonymous, Route("~/Calendar")]
         public async Task<IActionResult> Calendar(String apikey)
         {
