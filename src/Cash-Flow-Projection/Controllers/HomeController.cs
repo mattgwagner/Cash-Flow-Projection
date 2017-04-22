@@ -1,8 +1,4 @@
 ﻿using Cash_Flow_Projection.Models;
-using Ical.Net;
-using Ical.Net.DataTypes;
-using Ical.Net.Serialization;
-using Ical.Net.Serialization.iCalendar.Serializers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +6,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Cash_Flow_Projection.Controllers
@@ -17,6 +14,8 @@ namespace Cash_Flow_Projection.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private const string DateFormat = "yyyyMMddTHHmmssZ";
+
         private readonly Database db;
 
         public HomeController(Database db)
@@ -148,26 +147,31 @@ namespace Cash_Flow_Projection.Controllers
 
             // Build model
 
-            var calendar = new Calendar();
+            Func<DateTime, String> format = (date) => date.ToUniversalTime().ToString(DateFormat);
 
-            db
-                .Entries
-                .SinceBalance(DateTime.Today.AddYears(1))
-                .Select(@event => new CalendarEvent
-                {
-                    Uid = $"{@event.id}",
-                    Start = new CalDateTime(@event.Date.Date),
-                    IsAllDay = true,
-                    Summary = $"{@event.Description} {@event.Amount:c}"
-                })
-                .ToList()
-                .ForEach(@event => calendar.Events.Add(@event));
+            var sb = new StringBuilder()
+                .AppendLine("BEGIN:VCALENDAR")
+                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")
+                .AppendLine("VERSION:2.0")
+                .AppendLine("METHOD:PUBLISH");
 
-            var serializer = new CalendarSerializer(new SerializationContext());
+            foreach (var entry in db.Entries.SinceBalance(DateTime.Today.AddYears(1)))
+            {
+                sb =
+                    sb
+                    .AppendLine("BEGIN:VEVENT")
+                    .AppendLine($"SUMMARY:{entry.Description} {entry.Amount:c}")
+                    .AppendLine("DTSTART:" + entry.Date.ToString("yyyyMMdd"))
+                    .AppendLine("LAST-MODIFIED:" + format(DateTime.UtcNow))
+                    .AppendLine("SEQUENCE:0")
+                    .AppendLine("STATUS:CONFIRMED")
+                    .AppendLine("TRANSP:OPAQUE")
+                    .AppendLine("END:VEVENT");
+            }
 
-            var serialized = serializer.SerializeToString(calendar);
+            sb = sb.AppendLine("END:VCALENDAR");
 
-            var bytes = System.Text.Encoding.UTF8.GetBytes(serialized);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
 
             // Return iCal Feed
 
