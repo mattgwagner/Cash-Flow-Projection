@@ -148,7 +148,19 @@ namespace Cash_Flow_Projection.Controllers
 
             // Build model
 
-            Func<DateTime, String> format = (date) => date.ToUniversalTime().ToString(DateFormat);
+            Func<Entry, String> to_ics = (entry) =>
+            {
+                return new StringBuilder()
+                    .AppendLine("BEGIN:VEVENT")
+                    .AppendLine($"SUMMARY:{entry.Description} {entry.Amount:c}")
+                    .AppendLine("DTSTART:" + entry.Date.ToString("yyyyMMdd"))
+                    .AppendLine("LAST-MODIFIED:" + DateTime.UtcNow.ToUniversalTime().ToString(DateFormat))
+                    .AppendLine("SEQUENCE:0")
+                    .AppendLine("STATUS:CONFIRMED")
+                    .AppendLine("TRANSP:OPAQUE")
+                    .AppendLine("END:VEVENT")
+                    .ToString();
+            };
 
             var sb = new StringBuilder()
                 .AppendLine("BEGIN:VCALENDAR")
@@ -158,19 +170,21 @@ namespace Cash_Flow_Projection.Controllers
 
             foreach (var entry in db.Entries.SinceBalance(DateTime.Today.AddYears(1)))
             {
-                sb =
-                    sb
-                    .AppendLine("BEGIN:VEVENT")
-                    .AppendLine($"SUMMARY:{entry.Description} {entry.Amount:c}")
-                    .AppendLine("DTSTART:" + entry.Date.ToString("yyyyMMdd"))
-                    .AppendLine("LAST-MODIFIED:" + format(DateTime.UtcNow))
-                    .AppendLine("SEQUENCE:0")
-                    .AppendLine("STATUS:CONFIRMED")
-                    .AppendLine("TRANSP:OPAQUE")
-                    .AppendLine("END:VEVENT");
+                sb = sb.Append(to_ics(entry));
             }
 
-            sb = sb.AppendLine("END:VCALENDAR");
+            sb =
+                sb
+                .Append(to_ics(new Entry
+                {
+                    // Add a fake entry for today with the estimated balance
+
+                    Description = "BALANCE (Est)",
+                    Amount = db.Entries.GetBalanceOn(DateTime.Today),
+                    Date = DateTime.Today,
+                    IsBalance = true
+                }))
+                .AppendLine("END:VCALENDAR");
 
             var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
 
