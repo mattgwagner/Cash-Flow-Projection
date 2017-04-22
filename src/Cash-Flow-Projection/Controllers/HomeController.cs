@@ -155,7 +155,8 @@ namespace Cash_Flow_Projection.Controllers
                 .SinceBalance(DateTime.Today.AddYears(1))
                 .Select(@event => new CalendarEvent
                 {
-                    DtStart = new CalDateTime(@event.Date),
+                    Uid = $"{@event.id}",
+                    Start = new CalDateTime(@event.Date.Date),
                     IsAllDay = true,
                     Summary = $"{@event.Description} {@event.Amount:c}"
                 })
