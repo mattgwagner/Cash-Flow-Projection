@@ -31,19 +31,6 @@ namespace Cash_Flow_Projection.Controllers
             });
         }
 
-        public async Task<IActionResult> ByMonth(int month, int year)
-        {
-            // Cash at beginning of month
-
-            // Projections for each day of the month?
-
-            // Income vs Expenses
-
-            // Ending balance (excess/deficit of cash)
-
-            return View();
-        }
-
         [Route("~/Add")]
         public IActionResult Add()
         {
