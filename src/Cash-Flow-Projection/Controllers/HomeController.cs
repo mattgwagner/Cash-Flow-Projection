@@ -152,7 +152,7 @@ namespace Cash_Flow_Projection.Controllers
 
             db
                 .Entries
-                .SinceBalance(DateTime.Today.AddMonths(3))
+                .SinceBalance(DateTime.Today.AddYears(1))
                 .Select(@event => new CalendarEvent
                 {
                     DtStart = new CalDateTime(@event.Date),
