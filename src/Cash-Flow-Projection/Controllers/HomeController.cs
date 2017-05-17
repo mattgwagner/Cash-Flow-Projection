@@ -60,7 +60,14 @@ namespace Cash_Flow_Projection.Controllers
         {
             var entry = db.Entries.Single(_ => _.id == id);
 
-            entry.Date = entry.Date.AddDays(1);
+            if (entry.Date < DateTime.UtcNow)
+            {
+                entry.Date = DateTime.Today.AddDays(1);
+            }
+            else
+            {
+                entry.Date = entry.Date.AddDays(1);
+            }
 
             await db.SaveChangesAsync();
 
