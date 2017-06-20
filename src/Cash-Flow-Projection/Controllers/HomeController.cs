@@ -27,7 +27,7 @@ namespace Cash_Flow_Projection.Controllers
         {
             return View(new Dashboard
             {
-                Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(3))
+                Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(3)).ToList()
             });
         }
 

@@ -135,8 +135,7 @@ namespace Cash_Flow_Projection.Models
                 entries
                 .Where(entry => entry.Date >= GetLastBalanceEntry(entries)?.Date)
                 .Where(entry => entry.Date < end)
-                .OrderBy(entry => entry.Date)
-                .ToList();
+                .OrderBy(entry => entry.Date);
         }
 
         public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries)
