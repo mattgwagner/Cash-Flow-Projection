@@ -6,6 +6,8 @@
 
 <h3>Current Balance: @Html.DisplayFor(model => model.CurrentBalance) <div class="small">(as of @Html.DisplayFor(model => model.BalanceAsOf))</div></h3>
 
+<h6>Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</h6>
+
 @using (Html.BeginForm("Balance", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()

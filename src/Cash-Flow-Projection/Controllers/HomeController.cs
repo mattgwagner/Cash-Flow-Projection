@@ -25,10 +25,7 @@ namespace Cash_Flow_Projection.Controllers
 
         public IActionResult Index(DateTime? thru)
         {
-            return View(new Dashboard
-            {
-                Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(3)).ToList()
-            });
+            return View(new Dashboard(db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(3))));
         }
 
         [Route("~/Add")]

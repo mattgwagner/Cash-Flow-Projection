@@ -8,13 +8,21 @@ namespace Cash_Flow_Projection.Models
 {
     public class Dashboard
     {
-        public IEnumerable<Entry> Entries { get; set; }
+        private IEnumerable<Entry> Entries { get; }
+
+        public Dashboard(IEnumerable<Entry> entries)
+        {
+            this.Entries = entries.ToList();
+        }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CurrentBalance { get { return Entries.CurrentBalance(); } }
+        public virtual Decimal? CurrentBalance => Entries.CurrentBalance();
 
         [DataType(DataType.Date)]
-        public virtual DateTime? BalanceAsOf { get { return Entries.GetLastBalanceEntry()?.Date; } }
+        public virtual DateTime? BalanceAsOf => Entries.GetLastBalanceEntry()?.Date;
+
+        [DataType(DataType.Currency), Display(Name = "Minimum Balance")]
+        public virtual Decimal MinimumBalance => Rows.Select(row => row.Balance).Min();
 
         public virtual IEnumerable<Row> Rows
         {
