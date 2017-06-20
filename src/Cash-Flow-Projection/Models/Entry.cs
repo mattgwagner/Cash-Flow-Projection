@@ -131,9 +131,11 @@ namespace Cash_Flow_Projection.Models
         {
             // Includes the last balance entry
 
+            var last_balance = GetLastBalanceEntry(entries)?.Date;
+
             return
                 entries
-                .Where(entry => entry.Date >= GetLastBalanceEntry(entries)?.Date)
+                .Where(entry => entry.Date >= last_balance)
                 .Where(entry => entry.Date < end)
                 .OrderBy(entry => entry.Date);
         }
@@ -149,10 +151,12 @@ namespace Cash_Flow_Projection.Models
 
         public static Decimal GetBalanceOn(this IEnumerable<Entry> entries, DateTime asOf)
         {
+            var last_balance = GetLastBalanceEntry(entries).Date;
+
             var delta_since_last_balance =
                 entries
                 .Where(entry => !entry.IsBalance)
-                .Where(entry => entry.Date >= GetLastBalanceEntry(entries).Date)
+                .Where(entry => entry.Date >= last_balance)
                 .Where(entry => entry.Date <= asOf)
                 .Sum(entry => entry.Amount);
 
