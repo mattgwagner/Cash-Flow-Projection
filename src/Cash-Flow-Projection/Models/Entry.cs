@@ -16,6 +16,25 @@ namespace Cash_Flow_Projection.Models
         [DataType(DataType.Date)]
         public virtual DateTime? BalanceAsOf { get { return Entries.GetLastBalanceEntry()?.Date; } }
 
+        public virtual IEnumerable<Row> Rows
+        {
+            get
+            {
+                foreach (var entry in Entries.Where(e => !e.IsBalance).OrderBy(e => e.Date))
+                {
+                    yield return new Row
+                    {
+                        id = entry.id,
+                        Amount = entry.Amount,
+                        Description = entry.Description,
+                        Date = entry.Date,
+                        IsBalance = entry.IsBalance,
+                        Balance = Balance.GetBalanceOn(Entries, entry.Date)
+                    };
+                }
+            }
+        }
+
         public virtual String ChartData
         {
             get
@@ -34,6 +53,16 @@ namespace Cash_Flow_Projection.Models
 
                 return JsonConvert.SerializeObject(entries);
             }
+        }
+
+        public class Row : Entry
+        {
+            public virtual String RowClass => Balance < Decimal.Zero ? "danger" : Balance < 500 ? "warning" : string.Empty;
+
+            public virtual String AmountClass => Amount > Decimal.Zero ? "success" : string.Empty;
+
+            [DataType(DataType.Currency)]
+            public virtual Decimal Balance { get; set; }
         }
     }
 
@@ -62,7 +91,7 @@ namespace Cash_Flow_Projection.Models
         }
     }
 
-    public sealed class Entry
+    public class Entry
     {
         /// <summary>
         /// A unique identifer generated for the entry
