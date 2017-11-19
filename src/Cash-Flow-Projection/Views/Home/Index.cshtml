@@ -51,7 +51,17 @@
                 @using (Html.BeginForm("Delete", "Home", new { entry.id }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Delete All", "DeleteMatching", "Home", new { entry.Description })</li>
+                            <li>@Html.ActionLink("Delete Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date })</li>
+                        </ul>
+                    </div>
                 }
             </td>
         </tr>
