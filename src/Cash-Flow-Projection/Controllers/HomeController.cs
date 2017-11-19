@@ -131,12 +131,14 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> DeleteMatching(String description)
+        public async Task<IActionResult> DeleteMatching(String description, DateTime? after)
         {
             // Based on how we're doing repeating, this is the only way to clean up miskeyed data
 
             foreach (var e in db.Entries.Where(entry => entry.Description == description))
             {
+                if (after.HasValue && after >= e.Date) continue;
+
                 db.Entries.Remove(e);
             }
 
