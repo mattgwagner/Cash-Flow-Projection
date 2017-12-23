@@ -47,7 +47,13 @@ namespace Cash_Flow_Projection
 
             // Add authentication services
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
                 .AddCookie(o => o.LoginPath = new PathString("/Home/Login"))
                 .AddOpenIdConnect("Auth0", options =>
                 {
@@ -64,6 +70,10 @@ namespace Cash_Flow_Projection
 
                     // Set response type to code
                     options.ResponseType = "code";
+
+                    // Configure the scope
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
 
                     // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0
                     // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
@@ -127,6 +137,8 @@ namespace Cash_Flow_Projection
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
