@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -202,13 +201,13 @@ namespace Cash_Flow_Projection.Controllers
         [AllowAnonymous]
         public IActionResult Login(String returnUrl = "/")
         {
-            return new ChallengeResult("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
+            return new ChallengeResult("Auth0", new Microsoft.AspNetCore.Authentication.AuthenticationProperties { RedirectUri = returnUrl });
         }
 
         [Route("~/Logout")]
         public async Task Logout()
         {
-            await HttpContext.Authentication.SignOutAsync("Auth0", new AuthenticationProperties
+            await HttpContext.Authentication.SignOutAsync("Auth0", new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties
             {
                 RedirectUri = Url.Action(nameof(Index))
             });
