@@ -35,7 +35,15 @@ namespace Cash_Flow_Projection
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var auth0Settings = Configuration.GetValue<Auth0Settings>("Auth0");
+            // Add functionality to inject IOptions<T>
+            services.AddOptions();
+
+            // Add the Auth0 Settings object so it can be injected
+            services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
+
+            var auth0Settings = new Auth0Settings { };
+
+            Configuration.GetSection("Auth0").Bind(auth0Settings);
 
             // Add authentication services
 
@@ -98,9 +106,6 @@ namespace Cash_Flow_Projection
                     options.Filters.Add(new RequireHttpsAttribute { });
                 }
             });
-
-            // Add functionality to inject IOptions<T>
-            services.AddOptions();
 
             services.AddDbContext<Database>(options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
         }
