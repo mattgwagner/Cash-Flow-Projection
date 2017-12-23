@@ -41,7 +41,7 @@ namespace Cash_Flow_Projection
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(o => o.LoginPath = new PathString("/Home/Login"))
-                .AddOpenIdConnect(options =>
+                .AddOpenIdConnect("Auth0", options =>
                 {
                     // Set the authority to your Auth0 Domain
                     options.Authority = $"https://{auth0Settings.Domain}";
