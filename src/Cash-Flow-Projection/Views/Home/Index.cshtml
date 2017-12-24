@@ -29,6 +29,7 @@
             <th>Amount</th>
             <th>Balance</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
 
@@ -43,14 +44,16 @@
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-default">Postpone</button>
+                    <button type="submit" class="btn btn-sm btn-default">Postpone</button>
                 }
+            </td>
+            <td>
                 @using (Html.BeginForm("Delete", "Home", new { entry.id }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
@@ -66,7 +69,7 @@
 </table>
 
 @section Scripts
-    {
+{
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
