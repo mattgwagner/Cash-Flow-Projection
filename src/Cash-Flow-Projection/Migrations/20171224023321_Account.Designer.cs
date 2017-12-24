@@ -11,9 +11,10 @@ using System;
 namespace CashFlowProjection.Migrations
 {
     [DbContext(typeof(Cash_Flow_Projection.Models.Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20171224023321_Account")]
+    partial class Account
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

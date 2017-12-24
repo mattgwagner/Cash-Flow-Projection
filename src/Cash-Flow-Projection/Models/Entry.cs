@@ -33,5 +33,17 @@ namespace Cash_Flow_Projection.Models
         /// If true, this entry denotes the snapshot cash balance at the given datetime
         /// </summary>
         public Boolean IsBalance { get; set; }
+
+        /// <summary>
+        /// Which account this transaction applies to
+        /// </summary>
+        public Account Account { get; set; } = Account.Cash;
+    }
+
+    public enum Account : byte
+    {
+        Cash,
+
+        Credit
     }
 }

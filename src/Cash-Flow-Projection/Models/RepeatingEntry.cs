@@ -14,9 +14,11 @@ namespace Cash_Flow_Projection.Models
 
         public int RepeatInterval { get; set; } = 1;
 
-        public RepeatUnit Unit { get; set; } = RepeatUnit.Days;
+        public RepeatUnit Unit { get; set; } = RepeatUnit.Months;
 
-        public int RepeatIterations { get; set; } = 10;
+        public int RepeatIterations { get; set; } = 12;
+
+        public Account Account { get; set; } = Account.Cash;
 
         public enum RepeatUnit
         {

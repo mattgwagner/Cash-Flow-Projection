@@ -40,14 +40,15 @@ namespace Cash_Flow_Projection.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Balance(Decimal balance)
+        public async Task<IActionResult> Balance(Decimal balance, Account account = Account.Cash)
         {
             return await Add(new Entry
             {
                 Amount = balance,
                 IsBalance = true,
                 Description = "BALANCE",
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
+                Account = account
             });
         }
 
@@ -91,7 +92,8 @@ namespace Cash_Flow_Projection.Controllers
                 {
                     Amount = entry.Amount,
                     Description = entry.Description,
-                    Date = current
+                    Account = entry.Account,
+                    Date = current                    
                 });
 
                 switch (entry.Unit)

@@ -4,16 +4,13 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h3>Current Balance: @Html.DisplayFor(model => model.CurrentBalance) <span class="small">(as of @Html.DisplayFor(model => model.BalanceAsOf))</span></h3>
+<h3>
+    <span class="update-balance label label-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @Html.DisplayFor(model => model.CheckingBalance)</span>
+    <span class="update-balance label label-danger" data-account="credit" data-current="@Model.CreditBalance">Credit @Html.DisplayFor(model => model.CreditBalance)</span>
+    <span class="small">(as of @Html.DisplayFor(model => model.BalanceAsOf))</span>
+</h3>
 
-<h6>Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</h6>
-
-@using (Html.BeginForm("Balance", "Home", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    <input type="text" name="balance" placeholder="Balance" />
-    <button type="submit">Set</button>
-}
+<h6><span class="label label-default">Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</span></h6>
 
 <hr />
 
@@ -25,9 +22,11 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Account</th>
             <th>Description</th>
             <th>Amount</th>
-            <th>Balance</th>
+            <th>Checking</th>
+            <th>Credit</th>
             <th></th>
             <th></th>
         </tr>
@@ -37,14 +36,27 @@
     {
         <tr class="@entry.RowClass">
             <td>@Html.DisplayFor(_ => entry.Date)</td>
+            <td>
+                @switch (entry.Account)
+                {
+                    case Cash_Flow_Projection.Models.Account.Cash:
+                        <span class="label label-default">Cash</span>
+                        break;
+
+                    case Cash_Flow_Projection.Models.Account.Credit:
+                        <span class="label label-warning">Credit</span>
+                        break;
+                }
+            </td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
-            <td>@Html.DisplayFor(_ => entry.Balance)</td>
+            <td>@Html.DisplayFor(_ => entry.CashBalance)</td>
+            <td>@Html.DisplayFor(_ => entry.CreditBalance)</td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-default">Postpone</button>
+                    <button type="submit" class="btn btn-sm btn-default">Postpone</button>
                 }
             </td>
             <td>
@@ -52,8 +64,8 @@
                 {
                     @Html.AntiForgeryToken()
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
@@ -68,8 +80,30 @@
     }
 </table>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Update Balance</h4>
+            </div>
+            @using (Html.BeginForm("Balance", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <input type="text" name="account" id="account" hidden="hidden" />
+                    <input type="text" name="balance" id="balance" placeholder="Balance" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit">Update</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
 @section Scripts
-{
+    {
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -103,5 +137,19 @@
 
             chart.draw(data, options);
         }
+    </script>
+
+    <script>
+        $(document).on('click', '.update-balance', function () {
+            $("#balance").val($(this).data('current'));
+            $("#account").val($(this).data('account'));
+
+            $("#exampleModal").modal();
+
+            $('#exampleModal').on('shown.bs.modal', function () {
+                $('#balance').focus()
+            })
+
+        });
     </script>
 }
