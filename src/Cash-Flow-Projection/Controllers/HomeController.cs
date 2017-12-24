@@ -159,7 +159,7 @@ namespace Cash_Flow_Projection.Controllers
             {
                 return new StringBuilder()
                     .AppendLine("BEGIN:VEVENT")
-                    .AppendLine($"SUMMARY:{entry.Description} ").AppendLine(entry.Amount != 0 ? $" {entry.Amount:c}" : string.Empty)
+                    .AppendLine($"SUMMARY:{entry.Description} ").AppendLine($"{entry.Amount:c}")
                     .AppendLine("DTSTART:" + entry.Date.ToString("yyyyMMdd"))
                     .AppendLine("LAST-MODIFIED:" + DateTime.UtcNow.ToUniversalTime().ToString(DateFormat))
                     .AppendLine("SEQUENCE:0")
