@@ -8,6 +8,11 @@ namespace Cash_Flow_Projection.Models
     {
         public DbSet<Entry> Entries { get; set; }
 
+        public Database() : this(new DbContextOptionsBuilder<Database>().UseSqlite("Filename=Data.db").Options)
+        {
+            // Nothing to do here
+        }
+
         public Database(DbContextOptions<Database> options) : base(options)
         {
             // Nothing to do here
@@ -44,6 +49,8 @@ namespace Cash_Flow_Projection.Models
 
                 db.SaveChanges();
             }
+
+            db.Database.Migrate();
         }
     }
 }
