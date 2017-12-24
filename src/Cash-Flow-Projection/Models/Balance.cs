@@ -36,7 +36,7 @@ namespace Cash_Flow_Projection.Models
 
         public static Decimal GetBalanceOn(this IEnumerable<Entry> entries, DateTime asOf, Account account = Account.Cash)
         {
-            var last_balance = GetLastBalanceEntry(entries, account).Date;
+            var last_balance = GetLastBalanceEntry(entries, account)?.Date;
 
             var delta_since_last_balance =
                 entries
