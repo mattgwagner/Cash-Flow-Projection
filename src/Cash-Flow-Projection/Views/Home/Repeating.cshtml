@@ -37,7 +37,10 @@
 
     <div class="form-group form-group-xlg">
         @Html.DisplayNameFor(m => m.Account)
-        @Html.DropDownListFor(m => m.Account, Html.GetEnumSelectList<Cash_Flow_Projection.Models.Account>(), new { @class = "form-control", required = "required", placeholder = Html.DisplayNameFor(x => x.Account) })
+        <label for="Cash">Cash</label>
+        <input type="radio" name="account" value="cash" checked title="Cash" />
+        <label for="Credit">Credit</label>
+        <input type="radio" name="account" value="credit" title="Credit" />
     </div>
 
     <button type="submit">Add Entry</button>
