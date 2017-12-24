@@ -16,13 +16,16 @@ namespace Cash_Flow_Projection.Models
         }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CurrentBalance => Entries.CurrentBalance();
+        public virtual Decimal? CheckingBalance => Entries.CurrentBalance(Account.Cash);
+
+        [DataType(DataType.Currency)]
+        public virtual Decimal? CreditBalance => Entries.CurrentBalance(Account.Credit);
 
         [DataType(DataType.Date)]
-        public virtual DateTime? BalanceAsOf => Entries.GetLastBalanceEntry()?.Date;
+        public virtual DateTime? BalanceAsOf => Entries.GetLastBalanceEntry(Account.Cash)?.Date;
 
         [DataType(DataType.Currency), Display(Name = "Minimum Balance")]
-        public virtual Decimal MinimumBalance => Rows.Select(row => row.Cash).Min();
+        public virtual Decimal MinimumBalance => Rows.Select(row => row.CashBalance).Min();
 
         public virtual IEnumerable<Row> Rows
         {
@@ -38,7 +41,8 @@ namespace Cash_Flow_Projection.Models
                         Date = entry.Date,
                         Account = entry.Account,
                         IsBalance = entry.IsBalance,
-                        Cash = Balance.GetBalanceOn(Entries, entry.Date)
+                        CashBalance = Balance.GetBalanceOn(Entries, entry.Date, Account.Cash),
+                        CreditBalance = Balance.GetBalanceOn(Entries, entry.Date, Account.Credit)
                     };
                 }
             }
@@ -66,15 +70,15 @@ namespace Cash_Flow_Projection.Models
 
         public class Row : Entry
         {
-            public virtual String RowClass => Cash < Decimal.Zero ? "danger" : Cash < 500 ? "warning" : string.Empty;
+            public virtual String RowClass => CashBalance < Decimal.Zero ? "danger" : CashBalance < 500 ? "warning" : string.Empty;
 
             public virtual String AmountClass => (Account == Account.Cash && Amount > Decimal.Zero) ? "success" : string.Empty;
 
             [DataType(DataType.Currency)]
-            public virtual Decimal Cash { get; set; }
+            public virtual Decimal CashBalance { get; set; }
 
             [DataType(DataType.Currency)]
-            public virtual Decimal CreditCard { get; set; }
+            public virtual Decimal CreditBalance { get; set; }
         }
     }
 }

@@ -4,7 +4,9 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h3>Current Balance: @Html.DisplayFor(model => model.CurrentBalance) <span class="small">(as of @Html.DisplayFor(model => model.BalanceAsOf))</span></h3>
+<h3>Current Balance: @Html.DisplayFor(model => model.CheckingBalance) <span class="small">(as of @Html.DisplayFor(model => model.BalanceAsOf))</span></h3>
+
+<h3>Credit Balance: @Html.DisplayFor(model => model.CreditBalance)</h3>
 
 <h6>Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</h6>
 
@@ -40,7 +42,7 @@
         <tr class="@entry.RowClass">
             <td>@Html.DisplayFor(_ => entry.Date)</td>
             <td>
-                @switch(entry.Account)
+                @switch (entry.Account)
                 {
                     case Cash_Flow_Projection.Models.Account.Cash:
                         <span class="label label-default">Cash</span>
@@ -53,7 +55,7 @@
             </td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
-            <td>@Html.DisplayFor(_ => entry.Cash)</td>
+            <td>@Html.DisplayFor(_ => entry.CashBalance)</td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
@@ -83,7 +85,7 @@
 </table>
 
 @section Scripts
-                {
+    {
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
