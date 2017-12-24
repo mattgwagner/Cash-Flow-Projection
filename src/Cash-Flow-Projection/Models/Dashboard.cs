@@ -36,6 +36,7 @@ namespace Cash_Flow_Projection.Models
                         Amount = entry.Amount,
                         Description = entry.Description,
                         Date = entry.Date,
+                        Account = entry.Account,
                         IsBalance = entry.IsBalance,
                         Balance = Balance.GetBalanceOn(Entries, entry.Date)
                     };

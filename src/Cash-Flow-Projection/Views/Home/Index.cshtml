@@ -25,6 +25,7 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Account</th>
             <th>Description</th>
             <th>Amount</th>
             <th>Balance</th>
@@ -37,6 +38,18 @@
     {
         <tr class="@entry.RowClass">
             <td>@Html.DisplayFor(_ => entry.Date)</td>
+            <td>
+                @switch(entry.Account)
+                {
+                    case Cash_Flow_Projection.Models.Account.Cash:
+                        <span class="label label-default">Cash</span>
+                        break;
+
+                    case Cash_Flow_Projection.Models.Account.Credit:
+                        <span class="label label-warning">Credit</span>
+                        break;
+                }
+            </td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
             <td>@Html.DisplayFor(_ => entry.Balance)</td>
@@ -69,7 +82,7 @@
 </table>
 
 @section Scripts
-{
+                {
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
