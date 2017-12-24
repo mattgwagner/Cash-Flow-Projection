@@ -28,7 +28,8 @@
             <th>Account</th>
             <th>Description</th>
             <th>Amount</th>
-            <th>Balance</th>
+            <th>Checking</th>
+            <th>Credit</th>
             <th></th>
             <th></th>
         </tr>
@@ -52,7 +53,7 @@
             </td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
-            <td>@Html.DisplayFor(_ => entry.Balance)</td>
+            <td>@Html.DisplayFor(_ => entry.Cash)</td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {

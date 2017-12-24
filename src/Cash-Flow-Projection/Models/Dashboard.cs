@@ -22,7 +22,7 @@ namespace Cash_Flow_Projection.Models
         public virtual DateTime? BalanceAsOf => Entries.GetLastBalanceEntry()?.Date;
 
         [DataType(DataType.Currency), Display(Name = "Minimum Balance")]
-        public virtual Decimal MinimumBalance => Rows.Select(row => row.Balance).Min();
+        public virtual Decimal MinimumBalance => Rows.Select(row => row.Cash).Min();
 
         public virtual IEnumerable<Row> Rows
         {
@@ -38,7 +38,7 @@ namespace Cash_Flow_Projection.Models
                         Date = entry.Date,
                         Account = entry.Account,
                         IsBalance = entry.IsBalance,
-                        Balance = Balance.GetBalanceOn(Entries, entry.Date)
+                        Cash = Balance.GetBalanceOn(Entries, entry.Date)
                     };
                 }
             }
@@ -66,12 +66,15 @@ namespace Cash_Flow_Projection.Models
 
         public class Row : Entry
         {
-            public virtual String RowClass => Balance < Decimal.Zero ? "danger" : Balance < 500 ? "warning" : string.Empty;
+            public virtual String RowClass => Cash < Decimal.Zero ? "danger" : Cash < 500 ? "warning" : string.Empty;
 
-            public virtual String AmountClass => Amount > Decimal.Zero ? "success" : string.Empty;
+            public virtual String AmountClass => (Account == Account.Cash && Amount > Decimal.Zero) ? "success" : string.Empty;
 
             [DataType(DataType.Currency)]
-            public virtual Decimal Balance { get; set; }
+            public virtual Decimal Cash { get; set; }
+
+            [DataType(DataType.Currency)]
+            public virtual Decimal CreditCard { get; set; }
         }
     }
 }
