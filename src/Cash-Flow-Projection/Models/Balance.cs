@@ -6,9 +6,9 @@ namespace Cash_Flow_Projection.Models
 {
     public static class Balance
     {
-        public static Decimal CurrentBalance(this IEnumerable<Entry> entries)
+        public static Decimal CurrentBalance(this IEnumerable<Entry> entries, Account account = Account.Cash)
         {
-            return GetLastBalanceEntry(entries)?.Amount ?? Decimal.Zero;
+            return GetLastBalanceEntry(entries, account)?.Amount ?? Decimal.Zero;
         }
 
         public static IEnumerable<Entry> SinceBalance(this IEnumerable<Entry> entries, DateTime end)
@@ -24,27 +24,29 @@ namespace Cash_Flow_Projection.Models
                 .OrderBy(entry => entry.Date);
         }
 
-        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries)
+        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, Account account = Account.Cash)
         {
             return
                 entries
+                .Where(entry => entry.Account == account)
                 .Where(entry => entry.IsBalance)
                 .OrderByDescending(entry => entry.Date)
                 .FirstOrDefault();
         }
 
-        public static Decimal GetBalanceOn(this IEnumerable<Entry> entries, DateTime asOf)
+        public static Decimal GetBalanceOn(this IEnumerable<Entry> entries, DateTime asOf, Account account = Account.Cash)
         {
-            var last_balance = GetLastBalanceEntry(entries).Date;
+            var last_balance = GetLastBalanceEntry(entries, account).Date;
 
             var delta_since_last_balance =
                 entries
+                .Where(entry => entry.Account == account)
                 .Where(entry => !entry.IsBalance)
                 .Where(entry => entry.Date >= last_balance)
                 .Where(entry => entry.Date <= asOf)
                 .Sum(entry => entry.Amount);
 
-            return CurrentBalance(entries) + delta_since_last_balance;
+            return CurrentBalance(entries, account) + delta_since_last_balance;
         }
     }
 }
