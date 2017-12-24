@@ -92,7 +92,8 @@ namespace Cash_Flow_Projection.Controllers
                 {
                     Amount = entry.Amount,
                     Description = entry.Description,
-                    Date = current
+                    Account = entry.Account,
+                    Date = current                    
                 });
 
                 switch (entry.Unit)
