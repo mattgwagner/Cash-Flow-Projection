@@ -58,6 +58,7 @@
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
             <td>@Html.DisplayFor(_ => entry.CashBalance)</td>
+            <td>@Html.DisplayFor(_ => entry.CreditBalance)</td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
