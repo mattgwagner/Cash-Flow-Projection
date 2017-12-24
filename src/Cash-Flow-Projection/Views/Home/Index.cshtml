@@ -5,19 +5,12 @@
 }
 
 <h3>
-    <span class="label label-success">Cash @Html.DisplayFor(model => model.CheckingBalance) </span>
-    <span class="label label-danger">Credit @Html.DisplayFor(model => model.CreditBalance)</span>
+    <span class="update-balance label label-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @Html.DisplayFor(model => model.CheckingBalance)</span>
+    <span class="update-balance label label-danger" data-account="credit" data-current="@Model.CreditBalance">Credit @Html.DisplayFor(model => model.CreditBalance)</span>
     <span class="small">(as of @Html.DisplayFor(model => model.BalanceAsOf))</span>
 </h3>
 
 <h6><span class="label label-default">Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</span></h6>
-
-@using (Html.BeginForm("Balance", "Home", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    <input type="text" name="balance" placeholder="Balance" />
-    <button type="submit">Set</button>
-}
 
 <hr />
 
@@ -87,6 +80,28 @@
     }
 </table>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Update Balance</h4>
+            </div>
+            @using (Html.BeginForm("Balance", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <input type="text" name="account" id="account" hidden="hidden" />
+                    <input type="text" name="balance" id="balance" placeholder="Balance" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit">Update</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
 @section Scripts
     {
     <!--Load the AJAX API-->
@@ -122,5 +137,19 @@
 
             chart.draw(data, options);
         }
+    </script>
+
+    <script>
+        $(document).on('click', '.update-balance', function () {
+            $("#balance").val($(this).data('current'));
+            $("#account").val($(this).data('account'));
+
+            $("#exampleModal").modal();
+
+            $('#exampleModal').on('shown.bs.modal', function () {
+                $('#balance').focus()
+            })
+
+        });
     </script>
 }
