@@ -16,6 +16,9 @@ namespace Cash_Flow_Projection.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; } = DateTime.Today;
 
+        /// <summary>
+        /// A short, visible description of the transaction
+        /// </summary>
         public String Description { get; set; }
 
         /// <summary>
