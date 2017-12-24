@@ -18,6 +18,8 @@ namespace Cash_Flow_Projection.Models
 
         public int RepeatIterations { get; set; } = 10;
 
+        public Account Account { get; set; } = Account.Cash;
+
         public enum RepeatUnit
         {
             Days,
