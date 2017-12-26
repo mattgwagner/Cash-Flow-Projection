@@ -72,7 +72,21 @@ namespace Cash_Flow_Projection.Models
         {
             public virtual String RowClass => CashBalance < Decimal.Zero ? "danger" : CashBalance < 500 ? "warning" : string.Empty;
 
-            public virtual String AmountClass => Amount > Decimal.Zero ? "success" : string.Empty;
+            public virtual String AmountClass
+            {
+                get
+                {
+                    switch (Account)
+                    {
+                        case Account.Credit:
+                            return Amount < Decimal.Zero ? "success" : string.Empty;
+
+                        case Account.Cash:
+                        default:
+                            return Amount > Decimal.Zero ? "success" : string.Empty;
+                    }
+                }
+            }
 
             [DataType(DataType.Currency)]
             public virtual Decimal CashBalance { get; set; }
