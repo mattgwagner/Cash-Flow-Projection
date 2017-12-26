@@ -54,7 +54,7 @@
                 @switch (entry.Account)
                 {
                     case Cash_Flow_Projection.Models.Account.Cash:
-                        <span>Html.DisplayFor(_ => entry.CashBalance)</span>
+                        <span>@sHtml.DisplayFor(_ => entry.CashBalance)</span>
                         break;
                 }
             </td>
@@ -62,7 +62,7 @@
                 @switch (entry.Account)
                 {
                     case Cash_Flow_Projection.Models.Account.Credit:
-                        <span>Html.DisplayFor(_ => entry.CreditBalance)</span>
+                        <span>@Html.DisplayFor(_ => entry.CreditBalance)</span>
                         break;
                 }
             </td>
