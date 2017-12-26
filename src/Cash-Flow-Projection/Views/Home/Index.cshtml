@@ -50,8 +50,22 @@
             </td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
             <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
-            <td>@Html.DisplayFor(_ => entry.CashBalance)</td>
-            <td>@Html.DisplayFor(_ => entry.CreditBalance)</td>
+            <td>
+                @switch (entry.Account)
+                {
+                    case Cash_Flow_Projection.Models.Account.Cash:
+                        <span>Html.DisplayFor(_ => entry.CashBalance)</span>
+                        break;
+                }
+            </td>
+            <td>
+                @switch (entry.Account)
+                {
+                    case Cash_Flow_Projection.Models.Account.Credit:
+                        <span>Html.DisplayFor(_ => entry.CreditBalance)</span>
+                        break;
+                }
+            </td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
