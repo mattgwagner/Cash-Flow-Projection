@@ -15,7 +15,7 @@ namespace Cash_Flow_Projection.Models
             CheckingBalance = db.Entries.CurrentBalance(Account.Cash);
             CreditBalance = db.Entries.CurrentBalance(Account.Credit);
 
-            Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(4));
+            Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(4)).ToList();
         }
 
         [DataType(DataType.Currency)]
