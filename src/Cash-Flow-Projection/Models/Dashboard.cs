@@ -10,19 +10,19 @@ namespace Cash_Flow_Projection.Models
     {
         private IEnumerable<Entry> Entries { get; }
 
-        public Dashboard(IEnumerable<Entry> entries)
+        public Dashboard(Database db, DateTime? thru)
         {
-            this.Entries = entries.ToList();
+            CheckingBalance = db.Entries.CurrentBalance(Account.Cash);
+            CreditBalance = db.Entries.CurrentBalance(Account.Credit);
+
+            Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(4));
         }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CheckingBalance => Entries.CurrentBalance(Account.Cash);
+        public virtual Decimal? CheckingBalance { get; }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CreditBalance => Entries.CurrentBalance(Account.Credit);
-
-        [DataType(DataType.Date)]
-        public virtual DateTime? BalanceAsOf => Entries.GetLastBalanceEntry(Account.Cash)?.Date;
+        public virtual Decimal? CreditBalance { get; }
 
         [DataType(DataType.Currency), Display(Name = "Minimum Balance")]
         public virtual Decimal MinimumBalance => Rows.Select(row => row.CashBalance).Min();
