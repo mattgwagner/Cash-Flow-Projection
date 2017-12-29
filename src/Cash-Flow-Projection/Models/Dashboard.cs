@@ -34,7 +34,7 @@ namespace Cash_Flow_Projection.Models
                 Decimal credit = CreditBalance ?? 0;
                 Decimal cash = CheckingBalance ?? 0;
 
-                foreach (var entry in Entries.Where(e => !e.IsBalance).OrderBy(e => e.Date))
+                foreach (var entry in Entries.Where(e => !e.IsBalance).OrderBy(e => e.Date).ThenByDescending(e => e.Amount))
                 {
                     switch(entry.Account)
                     {
