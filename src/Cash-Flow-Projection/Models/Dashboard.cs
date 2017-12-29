@@ -39,11 +39,11 @@ namespace Cash_Flow_Projection.Models
                     switch(entry.Account)
                     {
                         case Account.Cash:
-                            cash -= entry.Amount;
+                            cash += entry.Amount;
                             break;
 
                         case Account.Credit:
-                            credit -= entry.Amount;
+                            credit += entry.Amount;
                             break;
                     }
 
