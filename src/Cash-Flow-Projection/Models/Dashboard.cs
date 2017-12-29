@@ -31,8 +31,22 @@ namespace Cash_Flow_Projection.Models
         {
             get
             {
+                Decimal credit = CreditBalance ?? 0;
+                Decimal cash = CheckingBalance ?? 0;
+
                 foreach (var entry in Entries.Where(e => !e.IsBalance).OrderBy(e => e.Date))
                 {
+                    switch(entry.Account)
+                    {
+                        case Account.Cash:
+                            cash -= entry.Amount;
+                            break;
+
+                        case Account.Credit:
+                            credit -= entry.Amount;
+                            break;
+                    }
+
                     yield return new Row
                     {
                         id = entry.id,
@@ -41,8 +55,8 @@ namespace Cash_Flow_Projection.Models
                         Date = entry.Date,
                         Account = entry.Account,
                         IsBalance = entry.IsBalance,
-                        CashBalance = Balance.GetBalanceOn(Entries, entry.Date, Account.Cash),
-                        CreditBalance = Balance.GetBalanceOn(Entries, entry.Date, Account.Credit)
+                        CashBalance = cash,
+                        CreditBalance = credit
                     };
                 }
             }
