@@ -93,7 +93,7 @@ namespace Cash_Flow_Projection.Controllers
                     Amount = entry.Amount,
                     Description = entry.Description,
                     Account = entry.Account,
-                    Date = current                    
+                    Date = current
                 });
 
                 switch (entry.Unit)
@@ -180,18 +180,7 @@ namespace Cash_Flow_Projection.Controllers
                 sb = sb.Append(to_ics(entry));
             }
 
-            sb =
-                sb
-                .Append(to_ics(new Entry
-                {
-                    // Add a fake entry for today with the estimated balance
-
-                    Description = "BALANCE (Est)",
-                    Amount = db.Entries.GetBalanceOn(DateTime.Today),
-                    Date = DateTime.Today,
-                    IsBalance = true
-                }))
-                .AppendLine("END:VCALENDAR");
+            sb = sb.AppendLine("END:VCALENDAR");
 
             var bytes = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
 
