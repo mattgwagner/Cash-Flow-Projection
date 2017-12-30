@@ -34,19 +34,6 @@ namespace Cash_Flow_Projection.Models
                 .FirstOrDefault();
         }
 
-        public static Decimal GetBalanceOn(this IEnumerable<Entry> entries, DateTime asOf, Account account = Account.Cash)
-        {
-            var last_balance = GetLastBalanceEntry(entries, account)?.Date;
-
-            var delta_since_last_balance =
-                entries
-                .Where(entry => entry.Account == account)
-                .Where(entry => !entry.IsBalance)
-                .Where(entry => entry.Date >= last_balance)
-                .Where(entry => entry.Date <= asOf)
-                .Sum(entry => entry.Amount);
-
-            return CurrentBalance(entries, account) + delta_since_last_balance;
-        }
+        
     }
 }
