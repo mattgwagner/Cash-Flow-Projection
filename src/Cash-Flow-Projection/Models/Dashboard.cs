@@ -19,10 +19,10 @@ namespace Cash_Flow_Projection.Models
         }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CheckingBalance { get; }
+        public virtual Decimal CheckingBalance { get; }
 
         [DataType(DataType.Currency)]
-        public virtual Decimal? CreditBalance { get; }
+        public virtual Decimal CreditBalance { get; }
 
         [DataType(DataType.Currency), Display(Name = "Minimum Balance")]
         public virtual Decimal MinimumBalance => Rows.Select(row => row.CashBalance).Min();
@@ -31,12 +31,12 @@ namespace Cash_Flow_Projection.Models
         {
             get
             {
-                Decimal credit = CreditBalance ?? 0;
-                Decimal cash = CheckingBalance ?? 0;
+                Decimal credit = CreditBalance;
+                Decimal cash = CheckingBalance;
 
                 foreach (var entry in Entries.Where(e => !e.IsBalance).OrderBy(e => e.Date).ThenByDescending(e => e.Amount))
                 {
-                    switch(entry.Account)
+                    switch (entry.Account)
                     {
                         case Account.Cash:
                             cash += entry.Amount;
@@ -66,7 +66,7 @@ namespace Cash_Flow_Projection.Models
         {
             get
             {
-                Decimal balance = CheckingBalance ?? 0;
+                Decimal balance = CheckingBalance;
 
                 var entries =
                     Entries
