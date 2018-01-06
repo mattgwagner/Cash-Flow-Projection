@@ -87,7 +87,9 @@ namespace Cash_Flow_Projection.Models
 
         public class Row : Entry
         {
-            public const Decimal WarningThreshold = 500;
+            public const Decimal CashWarningThreshold = 500;
+
+            public const Decimal CreditWarningThreshold = 2000;
 
             public virtual String RowClass
             {
@@ -97,7 +99,11 @@ namespace Cash_Flow_Projection.Models
                     {
                         if (CashBalance < Decimal.Zero) return "danger";
 
-                        if (CashBalance < WarningThreshold) return "warning";
+                        if (CashBalance < CashWarningThreshold) return "warning";
+                    }
+                    else
+                    {
+                        if (CreditBalance > CreditWarningThreshold) return "warning";
                     }
 
                     return string.Empty;
