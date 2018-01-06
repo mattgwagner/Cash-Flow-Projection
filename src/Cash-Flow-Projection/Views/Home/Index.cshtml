@@ -93,12 +93,12 @@
     }
 </table>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Update Balance</h4>
+                <h4 class="modal-title" id="balanceModalLabel">Update Balance</h4>
             </div>
             @using (Html.BeginForm("Balance", "Home", FormMethod.Post))
             {
@@ -157,9 +157,9 @@
             $("#balance").val($(this).data('current'));
             $("#account").val($(this).data('account'));
 
-            $("#exampleModal").modal();
+            $("#balanceModal").modal();
 
-            $('#exampleModal').on('shown.bs.modal', function () {
+            $('#balanceModal').on('shown.bs.modal', function () {
                 $('#balance').focus()
             })
 
