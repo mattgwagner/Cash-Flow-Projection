@@ -58,26 +58,34 @@ namespace Cash_Flow_Projection
                     .AddOpenIdConnect("Auth0", options =>
                     {
                         // Set the authority to your Auth0 Domain
-                        options.Authority = $"https://{auth0Settings.Domain}";
+                        options.Authority = $"https://{auth0Settings.Domain}"; // https://cierge.azurewebsites.net
 
                         // Configure the Auth0 Client ID and Client Secret
-                        options.ClientId = auth0Settings.ClientId;
+                        options.ClientId = auth0Settings.ClientId; // client-app in Cierge?
                         options.ClientSecret = auth0Settings.ClientSecret;
 
-                        // Do not automatically authenticate and challenge
-                        //options.AutomaticAuthenticate = false;
-                        //options.AutomaticChallenge = false;
+                        options.SaveTokens = true;
+                        options.GetClaimsFromUserInfoEndpoint = true;
 
-                        // Set response type to code
-                        options.ResponseType = "code";
+                        options.ResponseType = Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectResponseType.Code; // IdToken for Cierge
 
-                        // Configure the scope
+                        // Configure the scopes
                         options.Scope.Clear();
+                        options.Scope.Add("profile");
                         options.Scope.Add("openid");
+                        options.Scope.Add("email");
+                        options.Scope.Add("roles");
 
                         // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0
                         // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-                        options.CallbackPath = new PathString("/signin-auth0");
+                        options.CallbackPath = new PathString("/signin-auth0"); // /signin-oidc for Cierge
+
+                        // For Cierge
+                        //options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                        //{
+                        //    NameClaimType = "name",
+                        //    RoleClaimType = "role"
+                        //};
 
                         // Configure the Claims Issuer to be Auth0
                         options.ClaimsIssuer = "Auth0";
