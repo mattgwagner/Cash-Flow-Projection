@@ -55,22 +55,20 @@ namespace Cash_Flow_Projection.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkPaid(string id)
         {
-            // Hacky, but get the balances, subtract the amount of a transaction, and then delete the transaction as it's been paid
-
-            var dashboard = new Dashboard(db);
+            // Get the latest balance, update for the item getting marked paid, update balance
 
             var entry = db.Entries.Single(_ => _.id == id);
 
-            var balance = entry.Account == Account.Cash ? dashboard.CheckingBalance : dashboard.CreditBalance;
+            var balance = db.Entries.GetLastBalanceEntry(entry.Account);
 
             await Delete(id);
 
             return await Add(new Entry
             {
-                Amount = balance + entry.Amount,
+                Amount = balance.Amount + entry.Amount,
                 IsBalance = true,
                 Description = "BALANCE",
-                Date = entry.Date,
+                Date = balance.Date, // Leave the date the same unless we manually update it
                 Account = entry.Account
             });
         }
