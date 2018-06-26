@@ -52,7 +52,6 @@ namespace Cash_Flow_Projection.Controllers
             });
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkPaid(string id)
         {
             // Get the latest balance, update for the item getting marked paid, update balance
@@ -73,7 +72,6 @@ namespace Cash_Flow_Projection.Controllers
             });
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Postpone(string id)
         {
             var entry = db.Entries.Single(_ => _.id == id);
