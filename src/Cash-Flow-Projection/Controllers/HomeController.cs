@@ -68,7 +68,7 @@ namespace Cash_Flow_Projection.Controllers
                 Amount = balance.Amount + entry.Amount,
                 IsBalance = true,
                 Description = "BALANCE",
-                Date = balance.Date, // Leave the date the same unless we manually update it
+                Date = balance.Date.AddSeconds(1), // Leave the date the same unless we manually update it
                 Account = entry.Account
             });
         }
