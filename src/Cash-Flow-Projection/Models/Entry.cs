@@ -13,7 +13,7 @@ namespace Cash_Flow_Projection.Models
         /// <summary>
         /// Date the entry occurred
         /// </summary>
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MMM dd}")]
         public DateTime Date { get; set; } = DateTime.Today;
 
         /// <summary>
