@@ -95,9 +95,9 @@ namespace Cash_Flow_Projection.Models
                 {
                     if (Account == Account.Cash)
                     {
-                        if (CashBalance < Decimal.Zero) return "danger";
+                        if (CashBalance < Decimal.Zero) return "table-danger";
 
-                        if (CashBalance < CashWarningThreshold) return "warning";
+                        if (CashBalance < CashWarningThreshold) return "table-warning";
                     }
 
                     return string.Empty;
@@ -111,11 +111,11 @@ namespace Cash_Flow_Projection.Models
                     switch (Account)
                     {
                         case Account.Credit:
-                            return Amount < Decimal.Zero ? "success" : string.Empty;
+                            return Amount < Decimal.Zero ? "table-success" : string.Empty;
 
                         case Account.Cash:
                         default:
-                            return Amount > Decimal.Zero ? "success" : string.Empty;
+                            return Amount > Decimal.Zero ? "table-success" : string.Empty;
                     }
                 }
             }
