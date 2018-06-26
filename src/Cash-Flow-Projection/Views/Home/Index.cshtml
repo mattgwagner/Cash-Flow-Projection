@@ -75,9 +75,9 @@
                             Delete
                         </button>
                         <div class="dropdown-menu">
-                            @Html.ActionLink("This", "Delete", "Home", new { entry.id }, new { @class = "btn btn-xs btn-danger" })
-                            @Html.ActionLink("All", "DeleteMatching", "Home", new { entry.Description }, new { @class = "btn btn-xs btn-danger" })
-                            @Html.ActionLink("Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date }, new { @class = "btn btn-xs btn-danger" })
+                            @Html.ActionLink("This", "Delete", "Home", new { entry.id }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("All", "DeleteMatching", "Home", new { entry.Description }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date }, new { @class = "btn btn-danger" })
                         </div>
                     </div>
             </td>
