@@ -65,6 +65,14 @@
                         break;
                 }
             </td>
+
+            <td>
+                @using (Html.BeginForm("MarkPaid", "Home", new { entry.id }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-default">Paid</button>
+                }
+            </td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {

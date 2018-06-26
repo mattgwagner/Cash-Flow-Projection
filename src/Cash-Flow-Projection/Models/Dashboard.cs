@@ -10,7 +10,7 @@ namespace Cash_Flow_Projection.Models
     {
         private IEnumerable<Entry> Entries { get; }
 
-        public Dashboard(Database db, DateTime? thru)
+        public Dashboard(Database db, DateTime? thru = null)
         {
             CheckingBalance = db.Entries.CurrentBalance(Account.Cash);
             CreditBalance = db.Entries.CurrentBalance(Account.Credit);

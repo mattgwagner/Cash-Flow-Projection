@@ -53,6 +53,29 @@ namespace Cash_Flow_Projection.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkPaid(string id)
+        {
+            // Hacky, but get the balances, subtract the amount of a transaction, and then delete the transaction as it's been paid
+
+            var dashboard = new Dashboard(db);
+
+            var entry = db.Entries.Single(_ => _.id == id);
+
+            var balance = entry.Account == Account.Cash ? dashboard.CheckingBalance : dashboard.CreditBalance;
+
+            await Delete(id);
+
+            return await Add(new Entry
+            {
+                Amount = balance + entry.Amount,
+                IsBalance = true,
+                Description = "BALANCE",
+                Date = entry.Date,
+                Account = entry.Account
+            });
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Postpone(string id)
         {
             var entry = db.Entries.Single(_ => _.id == id);
