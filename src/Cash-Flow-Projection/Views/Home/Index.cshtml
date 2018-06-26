@@ -67,11 +67,11 @@
 
             <td>
                 <div class="" role="group">
-                    <button type="button" class="btn btn-primary">@Html.ActionLink("Paid", "MarkPaid", "Home", new { entry.id })</button>
-                    <button type="button" class="btn btn-secondary">@Html.ActionLink("Postpone", "Postpone", "Home", new { entry.id })</button>
-                    <button type="button" class="btn btn-danger">@Html.ActionLink("Delete", "Delete", "Home", new { entry.id })</button>
-                    <button type="button" class="btn btn-danger">@Html.ActionLink("Delete All", "DeleteMatching", "Home", new { entry.Description })</button>
-                    <button type="button" class="btn btn-danger">@Html.ActionLink("Delete Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date })</button>
+                    <button type="button" class="badge badge-primary">@Html.ActionLink("Paid", "MarkPaid", "Home", new { entry.id })</button>
+                    <button type="button" class="badge badge-secondary">@Html.ActionLink("Postpone", "Postpone", "Home", new { entry.id })</button>
+                    <button type="button" class="badge badge-danger">@Html.ActionLink("Delete", "Delete", "Home", new { entry.id })</button>
+                    <button type="button" class="badge badge-danger">@Html.ActionLink("Delete All", "DeleteMatching", "Home", new { entry.Description })</button>
+                    <button type="button" class="badge badge-danger">@Html.ActionLink("Delete Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date })</button>
                 </div>
             </td>
         </tr>
