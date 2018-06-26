@@ -67,12 +67,12 @@
 
             <td>
                 <div class="btn-group" role="group">
-                    @Html.ActionLink("Paid", "MarkPaid", "Home", new { entry.id }, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("Postpone", "Postpone", "Home", new { entry.id }, new { @class = "btn btn-secondary" })
+                    <a href="@Url.Action("MarkPaid", "Home", new { entry.id })" class="btn btn-success"><span class="fas fa-lg fa-check"></span></a>
+                    <a href="@Url.Action("Postpone", "Home", new { entry.id })" class="btn btn-default"><span class="fas fa-lg fa-clock"></span></a>
 
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Delete
+                            <i class="fas fas-trash"></i>
                         </button>
                         <div class="dropdown-menu">
                             @Html.ActionLink("This", "Delete", "Home", new { entry.id }, new { @class = "btn btn-danger" })
