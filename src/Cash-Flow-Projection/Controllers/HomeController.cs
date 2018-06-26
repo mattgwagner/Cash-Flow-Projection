@@ -141,7 +141,6 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(String id)
         {
             var entry = db.Entries.Single(_ => _.id == id);

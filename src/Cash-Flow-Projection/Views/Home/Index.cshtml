@@ -67,34 +67,30 @@
             </td>
 
             <td>
-                @using (Html.BeginForm("MarkPaid", "Home", new { entry.id }, FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-sm btn-default">Paid</button>
-                }
+                <div class="btn-group">
+                    <div class="btn-group">
+                        @using (Html.BeginForm("MarkPaid", "Home", new { entry.id }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-success">Paid</button>
+                        }
+
+                        <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Delete", "Delete", "Home", new { entry.id })</li>
+                            <li>@Html.ActionLink("Delete All", "DeleteMatching", "Home", new { entry.Description })</li>
+                            <li>@Html.ActionLink("Delete Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date })</li>
+                        </ul>
+                    </div>
             </td>
             <td>
                 @using (Html.BeginForm("Postpone", "Home", new { entry.id }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-sm btn-default">Postpone</button>
-                }
-            </td>
-            <td>
-                @using (Html.BeginForm("Delete", "Home", new { entry.id }, FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        <button type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Delete All", "DeleteMatching", "Home", new { entry.Description })</li>
-                            <li>@Html.ActionLink("Delete Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date })</li>
-                        </ul>
-                    </div>
+                    <button type="submit" class="btn btn-sm btn-warning">Postpone</button>
                 }
             </td>
         </tr>
