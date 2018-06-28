@@ -42,12 +42,14 @@ namespace Cash_Flow_Projection.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Balance(Decimal balance, Account account = Account.Cash)
         {
+            var last = db.Entries.GetLastBalanceEntry(account);
+
             return await Add(new Entry
             {
                 Amount = balance,
                 IsBalance = true,
                 Description = "BALANCE",
-                Date = DateTime.UtcNow,
+                Date = last.Date.AddSeconds(1),
                 Account = account
             });
         }
@@ -62,14 +64,7 @@ namespace Cash_Flow_Projection.Controllers
 
             await Delete(id);
 
-            return await Add(new Entry
-            {
-                Amount = balance.Amount + entry.Amount,
-                IsBalance = true,
-                Description = "BALANCE",
-                Date = balance.Date.AddSeconds(1), // Leave the date the same unless we manually update it
-                Account = entry.Account
-            });
+            return await Balance(balance.Amount + entry.Amount, entry.Account);
         }
 
         public async Task<IActionResult> Postpone(string id)
