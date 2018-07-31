@@ -161,7 +161,7 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [AllowAnonymous, Route("~/Calendar")]
+        [AllowAnonymous, Route("~/Calendar"), ResponseCache(Duration = 0)]
         public async Task<IActionResult> Calendar(String apikey)
         {
             // Verify API key
