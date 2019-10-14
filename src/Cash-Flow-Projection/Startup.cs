@@ -125,7 +125,7 @@ namespace Cash_Flow_Projection
                 }
             });
 
-            services.AddProgressiveWebApp();
+            app.AddProgressiveWebApp();
 
             services.AddDbContext<Database>(options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
         }
@@ -156,7 +156,7 @@ namespace Cash_Flow_Projection
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
+           
             Database.Init(db);
         }
     }
