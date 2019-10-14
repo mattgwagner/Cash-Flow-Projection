@@ -125,6 +125,8 @@ namespace Cash_Flow_Projection
                 }
             });
 
+            services.AddProgressiveWebApp();
+
             services.AddDbContext<Database>(options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
         }
 
