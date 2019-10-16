@@ -175,6 +175,8 @@ namespace Cash_Flow_Projection.Controllers
                     .AppendLine($"SUMMARY:{entry.Description} ").AppendLine($"{entry.Amount:c}")
                     .AppendLine("DTSTART:" + entry.Date.ToString("yyyyMMdd"))
                     .AppendLine("LAST-MODIFIED:" + DateTime.UtcNow.ToUniversalTime().ToString(DateFormat))
+                    .AppendLine("UID: " + entry.id)
+                    .AppendLine("DTSTAMP: " + DateTime.UtcNow.ToUniversalTime().ToString(DateFormat))
                     .AppendLine("SEQUENCE:0")
                     .AppendLine("STATUS:CONFIRMED")
                     .AppendLine("TRANSP:OPAQUE")
