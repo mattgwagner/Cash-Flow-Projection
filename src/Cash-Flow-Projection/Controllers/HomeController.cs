@@ -186,8 +186,8 @@ namespace Cash_Flow_Projection.Controllers
 
             var sb = new StringBuilder()
                 .AppendLine("BEGIN:VCALENDAR")
-                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")
                 .AppendLine("VERSION:2.0")
+                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")                
                 .AppendLine("METHOD:PUBLISH");
 
             foreach (var entry in db.Entries.SinceBalance(DateTime.Today.AddYears(1)))
