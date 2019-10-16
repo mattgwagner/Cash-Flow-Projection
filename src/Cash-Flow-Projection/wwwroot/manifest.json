@@ -4,11 +4,11 @@
   "description": "Red Leg Dev's Cash Flow Projections app",
   "icons": [
     {
-      "src": "/img/RLD LOGO V2.0.png",
+      "src": "/img/Logo.png",
       "sizes": "192x192"
     },
     {
-      "src": "/img/RLD LOGO V2.0.png",
+      "src": "/img/Logo.png",
       "sizes": "512x512"
     }
   ],
