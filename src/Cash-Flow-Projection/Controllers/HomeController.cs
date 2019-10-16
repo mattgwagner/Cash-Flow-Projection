@@ -173,8 +173,7 @@ namespace Cash_Flow_Projection.Controllers
                 return new StringBuilder()
                     .AppendLine("BEGIN:VEVENT")
                     .AppendLine($"SUMMARY:{entry.Description} ").AppendLine($"{entry.Amount:c}")
-                    .AppendLine("DTSTART:VALUE=DATE:" + entry.Date.ToString("yyyyMMdd"))
-                    .AppendLine("DTEND:VALUE=DATE:" + entry.Date.ToString("yyyyMMdd"))
+                    .AppendLine("DTSTART:" + entry.Date.ToString("yyyyMMdd"))
                     .AppendLine("LAST-MODIFIED:" + DateTime.UtcNow.ToString(DateFormat))
                     .AppendLine("UID:" + entry.id)
                     .AppendLine("DTSTAMP:" + DateTime.UtcNow.ToString(DateFormat))
@@ -188,8 +187,7 @@ namespace Cash_Flow_Projection.Controllers
             var sb = new StringBuilder()
                 .AppendLine("BEGIN:VCALENDAR")
                 .AppendLine("VERSION:2.0")
-                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")         
-                .AppendLine("CALSCALE:GREGORIAN")
+                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")                
                 .AppendLine("METHOD:PUBLISH");
 
             foreach (var entry in db.Entries.SinceBalance(DateTime.Today.AddYears(1)))
