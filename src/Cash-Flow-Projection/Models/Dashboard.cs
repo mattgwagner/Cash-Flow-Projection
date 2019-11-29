@@ -87,7 +87,7 @@ namespace Cash_Flow_Projection.Models
 
         public class Row : Entry
         {
-            public const Decimal CashWarningThreshold = 500;
+            public const Decimal CashWarningThreshold = 300;
 
             public virtual String RowClass
             {
