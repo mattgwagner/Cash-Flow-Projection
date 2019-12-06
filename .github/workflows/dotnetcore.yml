@@ -15,3 +15,13 @@ jobs:
         dotnet-version: 3.1.100
     - name: Build with dotnet
       run: dotnet build --configuration Release
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        # Publish profile (*.publishsettings) file contents with Web Deploy secrets
+        publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+        # Name of the Azure Web App
+        app-name: Cash-Flow-Projections
+        # Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
+        package: src/Cash-Flow-Projections
