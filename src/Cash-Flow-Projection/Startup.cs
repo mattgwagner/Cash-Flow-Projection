@@ -77,14 +77,7 @@ namespace Cash_Flow_Projection
                     options.ClaimsIssuer = "Auth0";
                 });
 
-            // Add framework services.
-            services.AddMvc(options =>
-            {
-                if (!IsDevelopment)
-                {
-                    options.Filters.Add(new RequireHttpsAttribute { });
-                }
-            });
+            services.AddMvcCore();
 
             services.AddProgressiveWebApp();
 
@@ -108,6 +101,11 @@ namespace Cash_Flow_Projection
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
 
             Database.Init(db);
         }
