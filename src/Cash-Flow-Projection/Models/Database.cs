@@ -49,8 +49,6 @@ namespace Cash_Flow_Projection.Models
 
                 db.SaveChanges();
             }
-
-            db.Database.Migrate();
         }
     }
 }
