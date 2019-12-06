@@ -77,7 +77,7 @@ namespace Cash_Flow_Projection
                     options.ClaimsIssuer = "Auth0";
                 });
 
-            services.AddMvcCore();
+            services.AddControllersWithViews();
 
             services.AddProgressiveWebApp();
 
