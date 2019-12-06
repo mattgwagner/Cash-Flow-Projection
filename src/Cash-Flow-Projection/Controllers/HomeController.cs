@@ -1,4 +1,5 @@
 ﻿using Cash_Flow_Projection.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -213,12 +214,12 @@ namespace Cash_Flow_Projection.Controllers
         [Route("~/Logout")]
         public async Task Logout()
         {
-            await HttpContext.Authentication.SignOutAsync("Auth0", new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties
+            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
             {
                 RedirectUri = Url.Action(nameof(Index))
             });
 
-            await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public IActionResult Backup()
