@@ -15,6 +15,9 @@ jobs:
         dotnet-version: 3.1.100
     - name: Build with dotnet
       run: dotnet build --configuration Release
+    
+    - name: Publish
+      run: dotnet publish --configuration Release -o artifacts
 
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v1
@@ -24,4 +27,4 @@ jobs:
         # Name of the Azure Web App
         app-name: Cash-Flow-Projections
         # Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
-        package: './src/Cash-Flow-Projection'
+        package: './artifacts'
