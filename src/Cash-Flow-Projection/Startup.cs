@@ -33,49 +33,49 @@ namespace Cash_Flow_Projection
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-                // Add functionality to inject IOptions<T>
-                services.AddOptions();
+            // Add functionality to inject IOptions<T>
+            services.AddOptions();
 
-                // Add the Auth0 Settings object so it can be injected
-                services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
+            // Add the Auth0 Settings object so it can be injected
+            services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
 
-                var auth0Settings = new Auth0Settings { };
+            var auth0Settings = new Auth0Settings { };
 
-                Configuration.GetSection("Auth0").Bind(auth0Settings);
+            Configuration.GetSection("Auth0").Bind(auth0Settings);
 
-                // Add authentication services
+            // Add authentication services
 
-                services
-                    .AddAuthentication(options =>
-                    {
-                        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    })
-                    .AddCookie(o => o.LoginPath = new PathString("/Home/Login"))
-                    .AddOpenIdConnect("Auth0", options =>
-                    {
-                        options.Authority = $"https://{auth0Settings.Domain}";
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(o => o.LoginPath = new PathString("/Home/Login"))
+                .AddOpenIdConnect("Auth0", options =>
+                {
+                    options.Authority = $"https://{auth0Settings.Domain}";
 
-                        // Configure the Auth0 Client ID and Client Secret
-                        options.ClientId = auth0Settings.ClientId;
-                        options.ClientSecret = auth0Settings.ClientSecret;
+                    // Configure the Auth0 Client ID and Client Secret
+                    options.ClientId = auth0Settings.ClientId;
+                    options.ClientSecret = auth0Settings.ClientSecret;
 
-                        options.ResponseType = OpenIdConnectResponseType.Code;
+                    options.ResponseType = OpenIdConnectResponseType.Code;
 
-                        // Configure the scopes
-                        options.Scope.Clear();
-                        options.Scope.Add("profile");
-                        options.Scope.Add("openid");
-                        options.Scope.Add("email");
+                    // Configure the scopes
+                    options.Scope.Clear();
+                    options.Scope.Add("profile");
+                    options.Scope.Add("openid");
+                    options.Scope.Add("email");
 
-                        // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0
-                        // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-                        options.CallbackPath = new PathString("/signin-auth0");
+                    // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0
+                    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+                    options.CallbackPath = new PathString("/signin-auth0");
 
-                        // Configure the Claims Issuer to be Auth0
-                        options.ClaimsIssuer = "Auth0";
-                    });
+                    // Configure the Claims Issuer to be Auth0
+                    options.ClaimsIssuer = "Auth0";
+                });
 
             // Add framework services.
             services.AddMvc(options =>
@@ -105,15 +105,10 @@ namespace Cash_Flow_Projection
 
             app.UseStaticFiles();
 
+            app.UseRouting();
+
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
-           
             Database.Init(db);
         }
     }
