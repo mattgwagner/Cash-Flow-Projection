@@ -24,4 +24,4 @@ jobs:
         # Name of the Azure Web App
         app-name: Cash-Flow-Projections
         # Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
-        package: src/Cash-Flow-Projections
+        package: '.src\Cash-Flow-Projections'
