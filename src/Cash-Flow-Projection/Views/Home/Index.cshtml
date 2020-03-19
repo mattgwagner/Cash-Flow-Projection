@@ -7,7 +7,7 @@
 <h3>
     <span class="update-balance badge badge-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @Html.DisplayFor(model => model.CheckingBalance)</span>
     <span class="update-balance badge badge-danger" data-account="credit" data-current="@Model.CreditBalance">Credit @Html.DisplayFor(model => model.CreditBalance)</span>
-    <span class="update-balance badge badge-success" data-account="business" data-current="@Model.BusinessBalance">Business @Html.DisplayFor(model => model.BusinessBalance)</span>
+    <span class="update-balance badge badge-warning" data-account="business" data-current="@Model.BusinessBalance">Business @Html.DisplayFor(model => model.BusinessBalance)</span>
 </h3>
 
 <h6><span class="badge badge-default">Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</span></h6>
@@ -44,11 +44,11 @@
                         break;
 
                     case Cash_Flow_Projection.Models.Account.Credit:
-                        <span class="badge badge-warning">Credit</span>
+                        <span class="badge badge-danger">Credit</span>
                         break;
 
                     case Cash_Flow_Projection.Models.Account.Business:
-                        <span class="badge badge-default">Business</span>
+                        <span class="badge badge-warning">Business</span>
                         break;
                 }
             </td>
