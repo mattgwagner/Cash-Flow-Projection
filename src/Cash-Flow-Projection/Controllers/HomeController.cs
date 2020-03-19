@@ -43,14 +43,19 @@ namespace Cash_Flow_Projection.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Balance(Decimal balance, Account account = Account.Cash)
         {
-            var last = db.Entries.GetLastBalanceEntry(account);
+            var last =
+                db
+                .Entries
+                .GetLastBalanceEntry(account)?
+                .Date
+                .AddSeconds(1);
 
             return await Add(new Entry
             {
                 Amount = balance,
                 IsBalance = true,
                 Description = "BALANCE",
-                Date = last?.Date.AddSeconds(1) ?? DateTime.Today,
+                Date = last ?? DateTime.Today,
                 Account = account
             });
         }
@@ -61,11 +66,16 @@ namespace Cash_Flow_Projection.Controllers
 
             var entry = db.Entries.Single(_ => _.id == id);
 
-            var balance = db.Entries.GetLastBalanceEntry(entry.Account);
+            var balance =
+                db
+                .Entries
+                .GetLastBalanceEntry(entry.Account)?
+                .Amount 
+                ?? Decimal.Zero;
 
             await Delete(id);
 
-            return await Balance(balance.Amount + entry.Amount, entry.Account);
+            return await Balance(entry.Amount + balance, entry.Account);
         }
 
         public async Task<IActionResult> Postpone(string id)
@@ -111,23 +121,13 @@ namespace Cash_Flow_Projection.Controllers
                     Date = current
                 });
 
-                switch (entry.Unit)
+                current = entry.Unit switch
                 {
-                    case RepeatingEntry.RepeatUnit.Days:
-                        current = current.AddDays(entry.RepeatInterval);
-                        break;
-
-                    case RepeatingEntry.RepeatUnit.Weeks:
-                        current = current.AddDays(7 * entry.RepeatInterval);
-                        break;
-
-                    case RepeatingEntry.RepeatUnit.Months:
-                        current = current.AddMonths(entry.RepeatInterval);
-                        break;
-
-                    default:
-                        throw new Exception("Unknown repeat unit!");
-                }
+                    RepeatingEntry.RepeatUnit.Days => current.AddDays(entry.RepeatInterval),
+                    RepeatingEntry.RepeatUnit.Weeks => current.AddDays(7 * entry.RepeatInterval),
+                    RepeatingEntry.RepeatUnit.Months => current.AddMonths(entry.RepeatInterval),
+                    _ => throw new Exception("Unknown repeat unit!"),
+                };
             }
 
             await db.SaveChangesAsync();
