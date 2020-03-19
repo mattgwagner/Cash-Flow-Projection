@@ -95,35 +95,24 @@ namespace Cash_Flow_Projection.Models
         {
             public const Decimal CashWarningThreshold = 300;
 
-            public virtual String RowClass
+            public String RowClass => Account switch
             {
-                get
-                {
-                    if (Account == Account.Cash)
-                    {
-                        if (CashBalance < Decimal.Zero) return "table-danger";
+                Account.Cash when CashBalance < 0 => "table-danger",
+                Account.Cash when CashBalance < CashWarningThreshold => "table-warning",
 
-                        if (CashBalance < CashWarningThreshold) return "table-warning";
-                    }
+                Account.Credit when Amount < 0 => "table-success",
 
-                    return string.Empty;
-                }
-            }
-
-            public virtual String AmountClass => Account switch
-            {
-                Account.Credit => Amount < Decimal.Zero ? "table-success" : string.Empty,
-                _ => Amount > Decimal.Zero ? "table-success" : string.Empty,
+                _ => string.Empty
             };
 
             [DataType(DataType.Currency)]
-            public virtual Decimal CashBalance { get; set; }
+            public Decimal CashBalance { get; set; }
 
             [DataType(DataType.Currency)]
-            public virtual Decimal CreditBalance { get; set; }
+            public Decimal CreditBalance { get; set; }
 
             [DataType(DataType.Currency)]
-            public virtual Decimal BusinessBalance { get; set; }
+            public Decimal BusinessBalance { get; set; }
         }
     }
 }

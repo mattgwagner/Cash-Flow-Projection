@@ -37,7 +37,7 @@
         <tr class="@entry.RowClass">
             <td>@Html.DisplayFor(_ => entry.Date)</td>
             <td>@Html.DisplayFor(_ => entry.Description)</td>
-            <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
+            <td>@Html.DisplayFor(_ => entry.Amount)</td>
             <td>
                 @switch (entry.Account)
                 {
