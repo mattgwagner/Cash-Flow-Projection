@@ -76,20 +76,16 @@ namespace Cash_Flow_Projection.Models
         {
             get
             {
-                Decimal balance = CheckingBalance;
-
                 var entries =
-                    Entries
-                     .Where(entry => entry.IsBalance == false)
-                     .Where(entry => entry.Account == Account.Cash)
-                     .GroupBy(entry => entry.Date.Date)
-                     .OrderBy(group => group.Key)
-                     .Select(group => new
+                    Rows
+                    .OrderBy(row => row.Date)
+                     .Select(row => new
                      {
-                         Date = group.Key.ToString("yyyy-MM-dd"),
-                         Balance = (balance += group.Sum(entry => entry.Amount))
-                     })
-                     .ToList();
+                         Date = row.Date.ToString("yyyy-MM-dd"),
+                         row.CashBalance,
+                         row.CreditBalance,
+                         row.BusinessBalance
+                     });
 
                 return JsonConvert.SerializeObject(entries);
             }

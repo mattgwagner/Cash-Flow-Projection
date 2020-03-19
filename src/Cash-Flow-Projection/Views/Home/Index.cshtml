@@ -140,11 +140,13 @@
             var data = new google.visualization.DataTable();
 
             data.addColumn('date', 'Date');
-            data.addColumn('number', 'Balance ($)');
+            data.addColumn('number', 'Cash ($)');
+            data.addColumn('number', 'Credit ($)');
+            data.addColumn('number', 'Business ($)');
 
             for (var i = 0; i < result.length; i++)
             {
-                data.addRow([new Date(result[i].Date), result[i].Balance]);
+                data.addRow([new Date(result[i].Date), result[i].CashBalance, result[i].CreditBalance, result[i].BusinessBalance]);
             }
 
             var options = {
