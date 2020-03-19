@@ -50,7 +50,7 @@ namespace Cash_Flow_Projection.Controllers
                 Amount = balance,
                 IsBalance = true,
                 Description = "BALANCE",
-                Date = last.Date.AddSeconds(1),
+                Date = last?.Date.AddSeconds(1) ?? DateTime.Today,
                 Account = account
             });
         }

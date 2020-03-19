@@ -110,22 +110,11 @@ namespace Cash_Flow_Projection.Models
                 }
             }
 
-            public virtual String AmountClass
+            public virtual String AmountClass => Account switch
             {
-                get
-                {
-                    switch (Account)
-                    {
-                        case Account.Credit:
-                            return Amount < Decimal.Zero ? "table-success" : string.Empty;
-
-                        case Account.Cash:
-                        case Account.Business:
-                        default:
-                            return Amount > Decimal.Zero ? "table-success" : string.Empty;
-                    }
-                }
-            }
+                Account.Credit => Amount < Decimal.Zero ? "table-success" : string.Empty,
+                _ => Amount > Decimal.Zero ? "table-success" : string.Empty,
+            };
 
             [DataType(DataType.Currency)]
             public virtual Decimal CashBalance { get; set; }
