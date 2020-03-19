@@ -102,6 +102,8 @@ namespace Cash_Flow_Projection.Models
 
                 Account.Credit when Amount < 0 => "table-success",
 
+                Account.Business when BusinessBalance < 0 => "table-danger",
+
                 _ => string.Empty
             };
 
