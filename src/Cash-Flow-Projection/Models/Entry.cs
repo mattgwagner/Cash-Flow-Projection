@@ -44,6 +44,8 @@ namespace Cash_Flow_Projection.Models
     {
         Cash,
 
-        Credit
+        Credit,
+
+        Business
     }
 }

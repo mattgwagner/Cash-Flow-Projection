@@ -14,6 +14,7 @@ namespace Cash_Flow_Projection.Models
         {
             CheckingBalance = db.Entries.CurrentBalance(Account.Cash);
             CreditBalance = db.Entries.CurrentBalance(Account.Credit);
+            BusinessBalance = db.Entries.CurrentBalance(Account.Business);
 
             Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(4)).ToList();
         }
@@ -24,6 +25,9 @@ namespace Cash_Flow_Projection.Models
         [DataType(DataType.Currency)]
         public virtual Decimal CreditBalance { get; }
 
+        [DataType(DataType.Currency)]
+        public virtual Decimal BusinessBalance { get; }
+
         [DataType(DataType.Currency), Display(Name = "Minimum Balance")]
         public virtual Decimal MinimumBalance => Rows.Select(row => row.CashBalance).Min();
 
@@ -33,6 +37,7 @@ namespace Cash_Flow_Projection.Models
             {
                 Decimal credit = CreditBalance;
                 Decimal cash = CheckingBalance;
+                Decimal business = BusinessBalance;
 
                 foreach (var entry in Entries.Where(e => !e.IsBalance).OrderBy(e => e.Date).ThenByDescending(e => e.Amount))
                 {
@@ -45,6 +50,10 @@ namespace Cash_Flow_Projection.Models
                         case Account.Credit:
                             credit += entry.Amount;
                             break;
+
+                        case Account.Business:
+                            business += entry.Amount;
+                            break;
                     }
 
                     yield return new Row
@@ -56,7 +65,8 @@ namespace Cash_Flow_Projection.Models
                         Account = entry.Account,
                         IsBalance = entry.IsBalance,
                         CashBalance = cash,
-                        CreditBalance = credit
+                        CreditBalance = credit,
+                        BusinessBalance = business
                     };
                 }
             }
@@ -114,6 +124,7 @@ namespace Cash_Flow_Projection.Models
                             return Amount < Decimal.Zero ? "table-success" : string.Empty;
 
                         case Account.Cash:
+                        case Account.Business:
                         default:
                             return Amount > Decimal.Zero ? "table-success" : string.Empty;
                     }
@@ -125,6 +136,9 @@ namespace Cash_Flow_Projection.Models
 
             [DataType(DataType.Currency)]
             public virtual Decimal CreditBalance { get; set; }
+
+            [DataType(DataType.Currency)]
+            public virtual Decimal BusinessBalance { get; set; }
         }
     }
 }

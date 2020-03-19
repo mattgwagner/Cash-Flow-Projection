@@ -7,6 +7,7 @@
 <h3>
     <span class="update-balance badge badge-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @Html.DisplayFor(model => model.CheckingBalance)</span>
     <span class="update-balance badge badge-danger" data-account="credit" data-current="@Model.CreditBalance">Credit @Html.DisplayFor(model => model.CreditBalance)</span>
+    <span class="update-balance badge badge-default" data-account="business" data-current="@Model.BusinessBalance">Credit @Html.DisplayFor(model => model.BusinessBalance)</span>
 </h3>
 
 <h6><span class="badge badge-default">Minimum Balance: @Html.DisplayFor(model => model.MinimumBalance)</span></h6>
@@ -26,6 +27,7 @@
             <th>Amount</th>
             <th>Checking</th>
             <th>Credit</th>
+            <th>Business</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -43,6 +45,10 @@
 
                     case Cash_Flow_Projection.Models.Account.Credit:
                         <span class="badge badge-warning">Credit</span>
+                        break;
+
+                    case Cash_Flow_Projection.Models.Account.Business:
+                        <span class="badge badge-default">Business</span>
                         break;
                 }
             </td>
@@ -64,6 +70,14 @@
                         break;
                 }
             </td>
+            <td>
+                @switch (entry.Account)
+                {
+                    case Cash_Flow_Projection.Models.Account.Business:
+                        <span>@Html.DisplayFor(_ => entry.BusinessBalance)</span>
+                        break;
+                }
+            </td>
 
             <td>
                 <div class="btn-group" role="group">
@@ -72,7 +86,7 @@
 
                     <div class="btn-group" role="group">
                         <span class="fas fa-lg fas-eraser"></span>
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">    
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <a href="#"><span class="fas fa-trash-alt"></span></a>
                         </button>
                         <div class="dropdown-menu">
