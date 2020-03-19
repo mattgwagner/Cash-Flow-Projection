@@ -35,10 +35,9 @@
     @foreach (var entry in Model.Rows)
     {
         <tr class="@entry.RowClass">
-
             <td>@Html.DisplayFor(_ => entry.Date)</td>
-
             <td>@Html.DisplayFor(_ => entry.Description)</td>
+            <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
             <td>
                 @switch (entry.Account)
                 {
@@ -52,15 +51,6 @@
 
                     case Cash_Flow_Projection.Models.Account.Business:
                         <span class="badge badge-warning">Business</span>
-                        break;
-                }
-            </td>
-            <td class="@entry.AmountClass">@Html.DisplayFor(_ => entry.Amount)</td>
-            <td>
-                @switch (entry.Account)
-                {
-                    case Cash_Flow_Projection.Models.Account.Cash:
-                        <span>@Html.DisplayFor(_ => entry.CashBalance)</span>
                         break;
                 }
             </td>
@@ -81,6 +71,14 @@
                         </div>
                     </div>
                 </div>
+            </td>
+            <td>
+                @switch (entry.Account)
+                {
+                    case Cash_Flow_Projection.Models.Account.Cash:
+                        <span>@Html.DisplayFor(_ => entry.CashBalance)</span>
+                        break;
+                }
             </td>
             <td>
                 @switch (entry.Account)
