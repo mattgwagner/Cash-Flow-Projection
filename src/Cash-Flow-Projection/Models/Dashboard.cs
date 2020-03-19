@@ -95,12 +95,15 @@ namespace Cash_Flow_Projection.Models
         {
             public const Decimal CashWarningThreshold = 300;
 
+            public const Decimal CreditWarningThreshold = 10000;
+
             public String RowClass => Account switch
             {
                 Account.Cash when CashBalance < 0 => "table-danger",
                 Account.Cash when CashBalance < CashWarningThreshold => "table-warning",
 
-                Account.Credit when Amount < 0 => "table-success",
+                Account.Credit when Amount < 0 => "table-info",
+                Account.Credit when CreditBalance > CreditWarningThreshold => "table-warning",
 
                 Account.Business when BusinessBalance < 0 => "table-danger",
 
