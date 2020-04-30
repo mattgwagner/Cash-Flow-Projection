@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Serilog.Context;
+using System.Security.Claims;
 
 namespace Cash_Flow_Projection
 {
@@ -99,6 +101,14 @@ namespace Cash_Flow_Projection
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                using (LogContext.PushProperty("Username", context.User?.FindFirstValue(ClaimTypes.Name)))
+                {
+                    await next();
+                }
+            });
 
             app.UseEndpoints(endpoints =>
             {
