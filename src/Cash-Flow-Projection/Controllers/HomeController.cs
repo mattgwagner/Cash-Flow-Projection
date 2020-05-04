@@ -91,7 +91,7 @@ namespace Cash_Flow_Projection.Controllers
                 entry.Date = entry.Date.AddDays(1);
             }
 
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
