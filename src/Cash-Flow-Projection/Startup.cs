@@ -104,7 +104,7 @@ namespace Cash_Flow_Projection
 
             app.Use(async (context, next) =>
             {
-                using (LogContext.PushProperty("Username", context.User?.FindFirstValue(ClaimTypes.Name)))
+                using (LogContext.PushProperty("Username", context.User?.Identity?.Name))
                 {
                     await next();
                 }
