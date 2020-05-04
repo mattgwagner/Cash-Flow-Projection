@@ -8,11 +8,6 @@ namespace Cash_Flow_Projection.Models
     {
         public DbSet<Entry> Entries { get; set; }
 
-        public Database() : this(new DbContextOptionsBuilder<Database>().UseSqlite("Filename=/Data/Data.db").Options)
-        {
-            // Nothing to do here
-        }
-
         public Database(DbContextOptions<Database> options) : base(options)
         {
             // Nothing to do here
