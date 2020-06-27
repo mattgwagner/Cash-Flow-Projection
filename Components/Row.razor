@@ -1,0 +1,152 @@
+﻿@using Cash_Flow_Projection.Models
+
+@inject Cash_Flow_Projection.Models.Database db
+
+<tr class="@Data.RowClass">
+    <td>@($"{Data.Date:MM/dd}")</td>
+    <td>@Data.Description</td>
+    <td>@($"{Data.Amount:c}")</td>
+    <td>
+        @switch (Data.Account)
+        {
+            case Cash_Flow_Projection.Models.Account.Cash:
+                <span class="badge badge-success">Cash</span>
+                break;
+
+            case Cash_Flow_Projection.Models.Account.Credit:
+                <span class="badge badge-danger">Credit</span>
+                break;
+
+            case Cash_Flow_Projection.Models.Account.Business:
+                <span class="badge badge-warning">Business</span>
+                break;
+        }
+    </td>
+    <td>
+        <div class="btn-group" role="group">
+            <a href="#" @onclick="MarkComplete" class="btn btn-success"><span class="fas fa-lg fa-check"></span></a>
+            <a href="#" @onclick="Postpone" class="btn btn-warning"><span class="fas fa-lg fa-clock"></span></a>
+
+            <div class="btn-group" role="group">
+                <span class="fas fa-lg fas-eraser"></span>
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a href="#"><span class="fas fa-trash-alt"></span></a>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" class="btn btn-danger" @onclick="Delete">This</a>
+                    <a href="#" class="btn btn-danger" @onclick="DeleteMatching">All</a>
+                    <a href="#" class="btn btn-danger" @onclick="DeleteAfter">Following</a>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td>
+        @switch (Data.Account)
+        {
+            case Cash_Flow_Projection.Models.Account.Cash:
+                <span>@($"{Data.CashBalance:c}")</span>
+                break;
+        }
+    </td>
+    <td>
+        @switch (Data.Account)
+        {
+            case Cash_Flow_Projection.Models.Account.Credit:
+                <span>@($"{Data.CreditBalance:c}")</span>
+                break;
+        }
+    </td>
+    <td>
+        @switch (Data.Account)
+        {
+            case Cash_Flow_Projection.Models.Account.Business:
+                <span>@($"{Data.BusinessBalance:c}")</span>
+                break;
+        }
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public Cash_Flow_Projection.Models.Dashboard.Row Data { get; set; }
+
+    [Parameter]
+    public EventCallback<EventArgs> OnClickCallback { get; set; }
+
+    private async Task Postpone(EventArgs args)
+    {
+        var entry = db.Entries.Single(_ => _.id == Data.id);
+
+        if (entry.Date < DateTime.UtcNow)
+        {
+            entry.Date = DateTime.Today.AddDays(1);
+        }
+        else
+        {
+            entry.Date = entry.Date.AddDays(1);
+        }
+
+        await db.SaveChangesAsync();
+
+        await OnClickCallback.InvokeAsync(args);
+    }
+
+    private async Task Delete(EventArgs args)
+    {
+        var entry = db.Entries.Single(_ => _.id == Data.id);
+
+        db.Entries.Remove(entry);
+
+        await db.SaveChangesAsync();
+
+        await OnClickCallback.InvokeAsync(args);
+    }
+
+    private async Task DeleteAfter(EventArgs args)
+    {
+        // Based on how we're doing repeating, this is the only way to clean up miskeyed data
+
+        foreach (var e in db.Entries.Where(entry => entry.Description == Data.Description && entry.Date >= Data.Date))
+        {
+            db.Entries.Remove(e);
+        }
+
+        await db.SaveChangesAsync();
+
+        await OnClickCallback.InvokeAsync(args);
+    }
+
+    private async Task DeleteMatching(EventArgs args)
+    {
+        // Based on how we're doing repeating, this is the only way to clean up miskeyed data
+
+        foreach (var e in db.Entries.Where(entry => entry.Description == Data.Description))
+        {
+            db.Entries.Remove(e);
+        }
+
+        await db.SaveChangesAsync();
+
+        OnInitialized();
+    }
+
+    private async Task MarkComplete(EventArgs args)
+    {
+        // Get the latest balance, update for the item getting marked paid, update balance
+
+        var entry = db.Entries.Single(_ => _.id == Data.id);
+
+        var balance =
+            db
+            .Entries
+            .GetLastBalanceEntry(entry.Account)?
+            .Amount
+            ?? Decimal.Zero;
+
+        db.Entries.Remove(entry);
+
+        await db.SaveChangesAsync();
+
+        OnClickCallback.InvokeAsync(args);
+    }
+}
