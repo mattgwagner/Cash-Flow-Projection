@@ -44,17 +44,17 @@
                         <a href="#" @onclick="@(_ => MarkComplete(row.id))" class="btn btn-success"><span class="fas fa-lg fa-check"></span></a>
                         <a href="#" @onclick="@(_ => Postpone(row.id))" class="btn btn-warning"><span class="fas fa-lg fa-clock"></span></a>
 
-                        @*<div class="btn-group" role="group">
-                                <span class="fas fa-lg fas-eraser"></span>
-                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <a href="#"><span class="fas fa-trash-alt"></span></a>
-                                </button>
-                                <div class="dropdown-menu">
-                                    @Html.ActionLink("This", "Delete", "Home", new { entry.id }, new { @class = "btn btn-danger" })
-                                    @Html.ActionLink("All", "DeleteMatching", "Home", new { entry.Description }, new { @class = "btn btn-danger" })
-                                    @Html.ActionLink("Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date }, new { @class = "btn btn-danger" })
-                                </div>
-                            </div>*@
+                        <div class="btn-group" role="group">
+                            <span class="fas fa-lg fas-eraser"></span>
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="#"><span class="fas fa-trash-alt"></span></a>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" class="btn btn-danger" @onclick="@(_ => Delete(row.id))">This</a>
+                                <a href="#" class="btn btn-danger" @onclick="@(_ => DeleteMatching(row.Description))">All</a>
+                                <a href="#" class="btn btn-danger" @onclick="@(_ => DeleteMatching(row.Description, row.Date))">Following</a>
+                            </div>
+                        </div>
                     </div>
                 </td>
                 <td>
@@ -108,6 +108,33 @@
         else
         {
             entry.Date = entry.Date.AddDays(1);
+        }
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
+    }
+
+    private async Task Delete(string id)
+    {
+        var entry = db.Entries.Single(_ => _.id == id);
+
+        db.Entries.Remove(entry);
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
+    }
+
+    private async Task DeleteMatching(string description, DateTime? after = null)
+    {
+        // Based on how we're doing repeating, this is the only way to clean up miskeyed data
+
+        foreach (var e in db.Entries.Where(entry => entry.Description == description))
+        {
+            if (after.HasValue && after >= e.Date) continue;
+
+            db.Entries.Remove(e);
         }
 
         await db.SaveChangesAsync();
