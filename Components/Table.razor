@@ -2,6 +2,16 @@
 
 @inject Cash_Flow_Projection.Models.Database db
 
+<h3>
+    <span class="update-balance badge badge-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @($"{Model.CheckingBalance:c}")</span>
+    <span class="update-balance badge badge-danger" data-account="credit" data-current="@Model.CreditBalance">Credit @($"{Model.CreditBalance:c}")</span>
+    <span class="update-balance badge badge-warning" data-account="business" data-current="@Model.BusinessBalance">Business @($"{Model.BusinessBalance:c}")</span>
+</h3>
+
+<h6><span class="badge badge-default">Minimum Balance: @($"{Model.MinimumBalance:c}")</span></h6>
+
+<hr />
+
 <table class="table table-striped table-responsive-sm">
     <thead class="thead-dark">
         <tr>
