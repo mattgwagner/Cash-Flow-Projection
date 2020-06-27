@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<component type="typeof(Test)" render-mode="ServerPrerendered" />
+<component param-Rows="@Model.Rows.ToList()" type="typeof(Cash_Flow_Projection.Components.Test)" render-mode="ServerPrerendered" />
 
 <h3>
     <span class="update-balance badge badge-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @Html.DisplayFor(model => model.CheckingBalance)</span>

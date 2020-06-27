@@ -1,12 +1,40 @@
-﻿<h3>Test Component! @Name</h3>
+﻿@using Cash_Flow_Projection.Models 
 
-<input type="button" @onclick="TestMethod" value="Click!" />
+@inject Cash_Flow_Projection.Models.Database db
+
+<table class="table">
+    <tbody>
+        @foreach (var row in Rows)
+        {
+            <tr>
+                <td>@row.CashBalance</td>
+                <td>
+                    <input type="button" @onclick="@(_ => MarkComplete(row.id))" value="Mark Complete" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
-    private string Name;
+    [Parameter]
+    public IEnumerable<Cash_Flow_Projection.Models.Dashboard.Row> Rows { get; set; }
 
-    public void TestMethod()
+    private async Task MarkComplete(string id)
     {
-        Name = DateTime.UtcNow.ToLongTimeString();
+        // Get the latest balance, update for the item getting marked paid, update balance
+
+        var entry = db.Entries.Single(_ => _.id == id);
+
+        var balance =
+            db
+            .Entries
+            .GetLastBalanceEntry(entry.Account)?
+            .Amount
+            ?? Decimal.Zero;
+
+        db.Entries.Remove(entry);
+
+        await db.SaveChangesAsync();
     }
 }
