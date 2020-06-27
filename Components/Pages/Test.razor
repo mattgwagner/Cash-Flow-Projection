@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Components
+
+<h3>Test Component! @Name</h3>
+
+<input type="button" @onclick="TestMethod" value="Click!"/>
+
+@code {
+    [Parameter]
+    public String Name { get; set; }
+
+    private void TestMethod()
+    {
+        Name = DateTime.UtcNow.ToLongTimeString();
+    }
+}

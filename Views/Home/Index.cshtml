@@ -1,8 +1,12 @@
-﻿@model Cash_Flow_Projection.Models.Dashboard
+﻿@using Cash_Flow_Projection.Components.Pages 
+
+@model Cash_Flow_Projection.Models.Dashboard
 
 @{
     ViewData["Title"] = "Home Page";
 }
+
+<component type="typeof(Test)" render-mode="ServerPrerendered" />
 
 <h3>
     <span class="update-balance badge badge-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @Html.DisplayFor(model => model.CheckingBalance)</span>
