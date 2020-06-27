@@ -87,10 +87,9 @@
 </table>
 
 @code {
-    [Parameter]
     public IEnumerable<Cash_Flow_Projection.Models.Dashboard.Row> Rows { get; set; }
 
-    private async Task Refresh()
+    protected override void OnInitialized()
     {
         var dash = new Dashboard(db);
 
@@ -112,7 +111,7 @@
 
         await db.SaveChangesAsync();
 
-        await Refresh();
+        OnInitialized();
     }
 
     private async Task Delete(string id)
@@ -123,7 +122,7 @@
 
         await db.SaveChangesAsync();
 
-        await Refresh();
+        OnInitialized();
     }
 
     private async Task DeleteMatching(string description, DateTime? after = null)
@@ -139,7 +138,7 @@
 
         await db.SaveChangesAsync();
 
-        await Refresh();
+        OnInitialized();
     }
 
     private async Task MarkComplete(string id)
@@ -159,6 +158,6 @@
 
         await db.SaveChangesAsync();
 
-        await Refresh();
+        OnInitialized();
     }
 }
