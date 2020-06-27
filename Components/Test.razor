@@ -22,7 +22,7 @@
             <tr class="@row.RowClass">
                 <td>@row.Date</td>
                 <td>@row.Description</td>
-                <td>@row.Amount</td>
+                <td>@($"{row.Amount:c}")</td>
                 <td>
                     @switch (row.Account)
                     {
@@ -61,7 +61,7 @@
                     @switch (row.Account)
                     {
                         case Cash_Flow_Projection.Models.Account.Cash:
-                            <span>@row.CashBalance</span>
+                            <span>@($"{row.CashBalance:c}")</span>
                             break;
                     }
                 </td>
@@ -69,7 +69,7 @@
                     @switch (row.Account)
                     {
                         case Cash_Flow_Projection.Models.Account.Credit:
-                            <span>@row.CreditBalance</span>
+                            <span>@($"{row.CreditBalance:c}")</span>
                             break;
                     }
                 </td>
@@ -77,7 +77,7 @@
                     @switch (row.Account)
                     {
                         case Cash_Flow_Projection.Models.Account.Business:
-                            <span>@row.BusinessBalance</span>
+                            <span>@($"{row.BusinessBalance:c}")</span>
                             break;
                     }
                 </td>
