@@ -136,17 +136,23 @@
 
         var entry = db.Entries.Single(_ => _.id == Data.id);
 
-        var balance =
-            db
-            .Entries
-            .GetLastBalanceEntry(entry.Account)?
-            .Amount
-            ?? Decimal.Zero;
-
         db.Entries.Remove(entry);
+
+        var balance_entry = db.Entries.GetLastBalanceEntry(entry.Account);
+
+        var balance = balance_entry?.Amount ?? Decimal.Zero;
+
+        db.Entries.Add(new Entry
+        {
+            Amount = entry.Amount + balance,
+            IsBalance = true,
+            Description = "BALANCE",
+            Date = balance_entry?.Date.AddSeconds(1) ?? DateTime.Today,
+            Account = entry.Account
+        });
 
         await db.SaveChangesAsync();
 
-        OnClickCallback.InvokeAsync(args);
+        await OnClickCallback.InvokeAsync(args);
     }
 }
