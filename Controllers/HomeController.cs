@@ -60,42 +60,6 @@ namespace Cash_Flow_Projection.Controllers
             });
         }
 
-        public async Task<IActionResult> MarkPaid(string id)
-        {
-            // Get the latest balance, update for the item getting marked paid, update balance
-
-            var entry = db.Entries.Single(_ => _.id == id);
-
-            var balance =
-                db
-                .Entries
-                .GetLastBalanceEntry(entry.Account)?
-                .Amount 
-                ?? Decimal.Zero;
-
-            await Delete(id);
-
-            return await Balance(entry.Amount + balance, entry.Account);
-        }
-
-        public async Task<IActionResult> Postpone(string id)
-        {
-            var entry = db.Entries.Single(_ => _.id == id);
-
-            if (entry.Date < DateTime.UtcNow)
-            {
-                entry.Date = DateTime.Today.AddDays(1);
-            }
-            else
-            {
-                entry.Date = entry.Date.AddDays(1);
-            }
-
-            db.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
-        }
-
         [HttpPost, ValidateAntiForgeryToken, Route("~/Add")]
         public async Task<IActionResult> Add(Entry entry)
         {
@@ -135,33 +99,6 @@ namespace Cash_Flow_Projection.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(String id)
-        {
-            var entry = db.Entries.Single(_ => _.id == id);
-
-            db.Entries.Remove(entry);
-
-            await db.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> DeleteMatching(String description, DateTime? after)
-        {
-            // Based on how we're doing repeating, this is the only way to clean up miskeyed data
-
-            foreach (var e in db.Entries.Where(entry => entry.Description == description))
-            {
-                if (after.HasValue && after >= e.Date) continue;
-
-                db.Entries.Remove(e);
-            }
-
-            await db.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-        }
-
         [AllowAnonymous, Route("~/Calendar"), ResponseCache(Duration = 0)]
         public async Task<IActionResult> Calendar(String apikey)
         {
@@ -188,7 +125,7 @@ namespace Cash_Flow_Projection.Controllers
             var sb = new StringBuilder()
                 .AppendLine("BEGIN:VCALENDAR")
                 .AppendLine("VERSION:2.0")
-                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")                
+                .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")
                 .AppendLine("METHOD:PUBLISH");
 
             foreach (var entry in db.Entries.SinceBalance(DateTime.Today.AddYears(1)))
