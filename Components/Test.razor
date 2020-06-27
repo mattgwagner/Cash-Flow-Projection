@@ -20,7 +20,7 @@
         @foreach (var row in Rows)
         {
             <tr class="@row.RowClass">
-                <td>@row.Date</td>
+                <td>@($"{row.Date:MM/dd}")</td>
                 <td>@row.Description</td>
                 <td>@($"{row.Amount:c}")</td>
                 <td>
