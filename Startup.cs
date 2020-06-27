@@ -78,6 +78,10 @@ namespace Cash_Flow_Projection
 
             services.AddControllersWithViews();
 
+            services.AddRazorPages();
+
+            services.AddServerSideBlazor();
+
             services.AddProgressiveWebApp();
 
             services.AddDbContext<Database>(options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
@@ -112,6 +116,7 @@ namespace Cash_Flow_Projection
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapBlazorHub();
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
