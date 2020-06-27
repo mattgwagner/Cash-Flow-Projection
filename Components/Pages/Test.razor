@@ -5,10 +5,9 @@
 <input type="button" @onclick="TestMethod" value="Click!"/>
 
 @code {
-    [Parameter]
-    public String Name { get; set; }
+    private string Name;
 
-    private void TestMethod()
+    public void TestMethod()
     {
         Name = DateTime.UtcNow.ToLongTimeString();
     }
