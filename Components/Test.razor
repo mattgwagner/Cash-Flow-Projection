@@ -1,4 +1,4 @@
-﻿@using Cash_Flow_Projection.Models 
+﻿@using Cash_Flow_Projection.Models
 
 @inject Cash_Flow_Projection.Models.Database db
 
@@ -6,8 +6,26 @@
     <tbody>
         @foreach (var row in Rows)
         {
-            <tr>
-                <td>@row.CashBalance</td>
+            <tr class="@row.RowClass">
+                <td>@row.Date</td>
+                <td>@row.Description</td>
+                <td>@row.Amount</td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Cash:
+                            <span class="badge badge-success">Cash</span>
+                            break;
+
+                        case Cash_Flow_Projection.Models.Account.Credit:
+                            <span class="badge badge-danger">Credit</span>
+                            break;
+
+                        case Cash_Flow_Projection.Models.Account.Business:
+                            <span class="badge badge-warning">Business</span>
+                            break;
+                    }
+                </td>
                 <td>
                     <input type="button" @onclick="@(_ => MarkComplete(row.id))" value="Mark Complete" />
                 </td>
@@ -19,6 +37,13 @@
 @code {
     [Parameter]
     public IEnumerable<Cash_Flow_Projection.Models.Dashboard.Row> Rows { get; set; }
+
+    private async Task Refresh()
+    {
+        var dash = new Dashboard(db);
+
+        Rows = dash.Rows.ToList();
+    }
 
     private async Task MarkComplete(string id)
     {
@@ -37,8 +62,6 @@
 
         await db.SaveChangesAsync();
 
-        var dash = new Dashboard(db);
-
-        Rows = dash.Rows.ToList();
+        await Refresh();
     }
 }
