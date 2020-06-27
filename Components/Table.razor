@@ -17,7 +17,7 @@
     </thead>
 
     <tbody>
-        @foreach (var row in Rows)
+        @foreach (var row in Model.Rows.ToList())
         {
             <Cash_Flow_Projection.Components.Row Data="@row" OnClickCallback="@OnInitialized" />
         }
@@ -25,12 +25,10 @@
 </table>
 
 @code {
-    public IEnumerable<Cash_Flow_Projection.Models.Dashboard.Row> Rows { get; set; }
+    public Dashboard Model { get; set; }
 
     protected override void OnInitialized()
     {
-        var dash = new Dashboard(db);
-
-        Rows = dash.Rows.ToList();
+        Model = new Dashboard(db);
     }
 }
