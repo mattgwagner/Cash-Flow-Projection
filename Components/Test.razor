@@ -29,6 +29,48 @@
                 <td>
                     <input type="button" @onclick="@(_ => MarkComplete(row.id))" value="Mark Complete" />
                 </td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a href="#" @onclick="@(_ => MarkComplete(row.id))" class="btn btn-success"><span class="fas fa-lg fa-check"></span></a>
+                        <a href="#" @onclick="@(_ => Postpone(row.id))" class="btn btn-warning"><span class="fas fa-lg fa-clock"></span></a>
+
+                        @*<div class="btn-group" role="group">
+                            <span class="fas fa-lg fas-eraser"></span>
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="#"><span class="fas fa-trash-alt"></span></a>
+                            </button>
+                            <div class="dropdown-menu">
+                                @Html.ActionLink("This", "Delete", "Home", new { entry.id }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink("All", "DeleteMatching", "Home", new { entry.Description }, new { @class = "btn btn-danger" })
+                                @Html.ActionLink("Following", "DeleteMatching", "Home", new { entry.Description, after = entry.Date }, new { @class = "btn btn-danger" })
+                            </div>
+                        </div>*@
+                    </div>
+                </td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Cash:
+                            <span>@row.CashBalance</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Credit:
+                            <span>@row.CreditBalance</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Business:
+                            <span>@row.BusinessBalance</span>
+                            break;
+                    }
+                </td>
             </tr>
         }
     </tbody>
@@ -43,6 +85,24 @@
         var dash = new Dashboard(db);
 
         Rows = dash.Rows.ToList();
+    }
+
+    private async Task Postpone(string id)
+    {
+        var entry = db.Entries.Single(_ => _.id == id);
+
+        if (entry.Date < DateTime.UtcNow)
+        {
+            entry.Date = DateTime.Today.AddDays(1);
+        }
+        else
+        {
+            entry.Date = entry.Date.AddDays(1);
+        }
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
     }
 
     private async Task MarkComplete(string id)
