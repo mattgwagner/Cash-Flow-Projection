@@ -1,14 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components
-
-@using System.Net.Http
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using Microsoft.JSInterop
-
-<h3>Test Component! @Name</h3>
+﻿<h3>Test Component! @Name</h3>
 
 <input type="button" @onclick="TestMethod" value="Click!" />
 
@@ -18,11 +8,5 @@
     public void TestMethod()
     {
         Name = DateTime.UtcNow.ToLongTimeString();
-    }
-
-    protected override void OnInitialized()
-    {
-        Name = "Test 1";
-        base.OnInitialized();
     }
 }
