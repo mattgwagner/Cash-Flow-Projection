@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ADA085A0-D904-45E8-8319-86283738573B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB1B585A-90A4-4BEB-A6FF-BC0C14C90D00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cash-Flow-Projection", "src\Cash-Flow-Projection\Cash-Flow-Projection.csproj", "{F6BD9EAD-B600-45E4-9D2E-6B0591BF1750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cash-Flow-Projection", "Cash-Flow-Projection.csproj", "{F6BD9EAD-B600-45E4-9D2E-6B0591BF1750}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,7 +21,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{F6BD9EAD-B600-45E4-9D2E-6B0591BF1750} = {ADA085A0-D904-45E8-8319-86283738573B}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E92AFE87-E729-477D-B7A3-09CABBF940B0}
 	EndGlobalSection
 EndGlobal
