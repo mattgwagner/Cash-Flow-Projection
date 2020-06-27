@@ -1,0 +1,164 @@
+﻿@using Cash_Flow_Projection.Models
+
+@inject Cash_Flow_Projection.Models.Database db
+
+<table class="table table-striped table-responsive-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Account</th>
+            <th>Actions</th>
+            <th>Checking</th>
+            <th>Credit</th>
+            <th>Business</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var row in Rows)
+        {
+            <tr class="@row.RowClass">
+                <td>@row.Date</td>
+                <td>@row.Description</td>
+                <td>@($"{row.Amount:c}")</td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Cash:
+                            <span class="badge badge-success">Cash</span>
+                            break;
+
+                        case Cash_Flow_Projection.Models.Account.Credit:
+                            <span class="badge badge-danger">Credit</span>
+                            break;
+
+                        case Cash_Flow_Projection.Models.Account.Business:
+                            <span class="badge badge-warning">Business</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a href="#" @onclick="@(_ => MarkComplete(row.id))" class="btn btn-success"><span class="fas fa-lg fa-check"></span></a>
+                        <a href="#" @onclick="@(_ => Postpone(row.id))" class="btn btn-warning"><span class="fas fa-lg fa-clock"></span></a>
+
+                        <div class="btn-group" role="group">
+                            <span class="fas fa-lg fas-eraser"></span>
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="#"><span class="fas fa-trash-alt"></span></a>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" class="btn btn-danger" @onclick="@(_ => Delete(row.id))">This</a>
+                                <a href="#" class="btn btn-danger" @onclick="@(_ => DeleteMatching(row.Description))">All</a>
+                                <a href="#" class="btn btn-danger" @onclick="@(_ => DeleteMatching(row.Description, row.Date))">Following</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Cash:
+                            <span>@($"{row.CashBalance:c}")</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Credit:
+                            <span>@($"{row.CreditBalance:c}")</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @switch (row.Account)
+                    {
+                        case Cash_Flow_Projection.Models.Account.Business:
+                            <span>@($"{row.BusinessBalance:c}")</span>
+                            break;
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public IEnumerable<Cash_Flow_Projection.Models.Dashboard.Row> Rows { get; set; }
+
+    private async Task Refresh()
+    {
+        var dash = new Dashboard(db);
+
+        Rows = dash.Rows.ToList();
+    }
+
+    private async Task Postpone(string id)
+    {
+        var entry = db.Entries.Single(_ => _.id == id);
+
+        if (entry.Date < DateTime.UtcNow)
+        {
+            entry.Date = DateTime.Today.AddDays(1);
+        }
+        else
+        {
+            entry.Date = entry.Date.AddDays(1);
+        }
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
+    }
+
+    private async Task Delete(string id)
+    {
+        var entry = db.Entries.Single(_ => _.id == id);
+
+        db.Entries.Remove(entry);
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
+    }
+
+    private async Task DeleteMatching(string description, DateTime? after = null)
+    {
+        // Based on how we're doing repeating, this is the only way to clean up miskeyed data
+
+        foreach (var e in db.Entries.Where(entry => entry.Description == description))
+        {
+            if (after.HasValue && after >= e.Date) continue;
+
+            db.Entries.Remove(e);
+        }
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
+    }
+
+    private async Task MarkComplete(string id)
+    {
+        // Get the latest balance, update for the item getting marked paid, update balance
+
+        var entry = db.Entries.Single(_ => _.id == id);
+
+        var balance =
+            db
+            .Entries
+            .GetLastBalanceEntry(entry.Account)?
+            .Amount
+            ?? Decimal.Zero;
+
+        db.Entries.Remove(entry);
+
+        await db.SaveChangesAsync();
+
+        await Refresh();
+    }
+}
