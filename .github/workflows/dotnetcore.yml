@@ -20,7 +20,7 @@ jobs:
       run: dotnet publish --configuration Release -o artifacts --no-build
 
     - name: Azure WebApp
-      uses: Azure/webapps-deploy@v2.1
+      uses: Azure/webapps-deploy@v2
       if: contains(github.ref, 'master')
       with:
         # Publish profile (*.publishsettings) file contents with Web Deploy secrets
