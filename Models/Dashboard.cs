@@ -97,12 +97,18 @@ namespace Cash_Flow_Projection.Models
 
             public String RowClass => Account switch
             {
+                // When cash accounts go negative
                 Account.Cash when CashBalance < 0 => "table-danger",
-                Account.Cash when CashBalance < CashWarningThreshold => "table-warning",
-
-                Account.Credit when Amount < 0 => "table-info",
-
                 Account.Business when BusinessBalance < 0 => "table-danger",
+
+                // Check against a warning threshold
+                Account.Cash when CashBalance < CashWarningThreshold => "table-warning",
+                Account.Business when BusinessBalance < CashWarningThreshold => "table-warning",
+
+                Account.Credit when Amount < 0 => "table-info", // Credit Card Payments
+
+                Account.Business when Amount > 0 => "table-info", // Deposits into Business
+                Account.Cash when Amount > 0 => "table-info", // Deposits into Checking
 
                 _ => string.Empty
             };
