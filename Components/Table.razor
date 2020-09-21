@@ -40,7 +40,7 @@
 
     private Dashboard Model;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         Model = new Dashboard(db, Thru);
     }
