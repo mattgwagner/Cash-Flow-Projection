@@ -34,11 +34,13 @@
     </tbody>
 </table>
 
-<button @onclick="() => Thru = Thru?.AddMonths(3)" class="btn btn-link">Load More</button>
+<a href="/?Thru=@more">Load More</a>
 
 @code {
     [Parameter]
-    public DateTime? Thru { get; set; }
+    public DateTime Thru { get; set; }
+
+    private DateTime more => Thru.AddMonths(3);
 
     private Dashboard Model;
 
