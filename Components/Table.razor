@@ -35,10 +35,13 @@
 </table>
 
 @code {
+    [Parameter]
+    public DateTime? Thru { get; set; }
+
     private Dashboard Model;
 
     protected override void OnInitialized()
     {
-        Model = new Dashboard(db);
+        Model = new Dashboard(db, Thru);
     }
 }

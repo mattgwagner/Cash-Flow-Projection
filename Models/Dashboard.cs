@@ -8,15 +8,19 @@ namespace Cash_Flow_Projection.Models
 {
     public class Dashboard
     {
+        public DateTime Thru { get; private set; }
+
         private IEnumerable<Entry> Entries { get; }
 
         public Dashboard(Database db, DateTime? thru = null)
         {
+            Thru = thru ?? DateTime.Today.AddMonths(3);
+
             CheckingBalance = db.Entries.CurrentBalance(Account.Cash);
             CreditBalance = db.Entries.CurrentBalance(Account.Credit);
             BusinessBalance = db.Entries.CurrentBalance(Account.Business);
 
-            Entries = db.Entries.SinceBalance(thru ?? DateTime.Today.AddMonths(3)).ToList();
+            Entries = db.Entries.SinceBalance(Thru).ToList();
         }
 
         [DataType(DataType.Currency)]
