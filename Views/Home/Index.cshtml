@@ -10,6 +10,12 @@
 
 <component type="typeof(Cash_Flow_Projection.Components.Table)" render-mode="Server" params-Thru="@Model.Thru" />
 
+@{ 
+    var more = Model.Thru.AddMonths(1);
+}
+
+<a href="/?thru=@more">Load More</a>
+
 <div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
