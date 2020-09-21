@@ -34,6 +34,8 @@
     </tbody>
 </table>
 
+<button @onclick="() => Thru = Thru?.AddMonths(3)" class="btn btn-link">Load More</button>
+
 @code {
     [Parameter]
     public DateTime? Thru { get; set; }
