@@ -29,7 +29,7 @@
     <tbody>
         @foreach (var row in Model.Rows.ToList())
         {
-            <Cash_Flow_Projection.Components.Row Data="@row" OnClickCallback="@(async () => await OnParametersSetAsync())" />
+            <Cash_Flow_Projection.Components.Row Data="@row" OnClickCallback="OnParametersSetAsync" />
         }
     </tbody>
 </table>
