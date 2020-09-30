@@ -127,7 +127,7 @@
 
         await db.SaveChangesAsync();
 
-        OnInitialized();
+        await OnClickCallback.InvokeAsync(args);
     }
 
     private async Task MarkComplete(EventArgs args)
