@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.3" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
-    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
