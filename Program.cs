@@ -30,7 +30,7 @@ namespace Cash_Flow_Projection
                            .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
                            .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
                            .Enrich.WithProperty("Version", $"{typeof(Startup).Assembly.GetName().Version}")
-                           .WriteTo.Seq(serverUrl: "https://logs.redleg.app", apiKey: context.Configuration.GetValue<string>("Seq:ApiKey"), compact: true, controlLevelSwitch: LogLevel)
+                           .WriteTo.Seq(serverUrl: "https://logs.redleg.app", apiKey: context.Configuration.GetValue<string>("Seq:ApiKey"), controlLevelSwitch: LogLevel)
                            .MinimumLevel.ControlledBy(LogLevel)
                            .CreateLogger();
 
