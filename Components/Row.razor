@@ -9,15 +9,15 @@
     <td>
         @switch (Data.Account)
         {
-            case Cash_Flow_Projection.Models.Account.Cash:
+            case Cash_Flow_Projection.Models.AccountType.Cash:
                 <span class="badge badge-success">Cash</span>
                 break;
 
-            case Cash_Flow_Projection.Models.Account.Credit:
+            case Cash_Flow_Projection.Models.AccountType.Credit:
                 <span class="badge badge-danger">Credit</span>
                 break;
 
-            case Cash_Flow_Projection.Models.Account.Business:
+            case Cash_Flow_Projection.Models.AccountType.Business:
                 <span class="badge badge-warning">Business</span>
                 break;
         }
@@ -43,7 +43,7 @@
     <td>
         @switch (Data.Account)
         {
-            case Cash_Flow_Projection.Models.Account.Cash:
+            case Cash_Flow_Projection.Models.AccountType.Cash:
                 <span>@($"{Data.CashBalance:c}")</span>
                 break;
         }
@@ -51,7 +51,7 @@
     <td>
         @switch (Data.Account)
         {
-            case Cash_Flow_Projection.Models.Account.Credit:
+            case Cash_Flow_Projection.Models.AccountType.Credit:
                 <span>@($"{Data.CreditBalance:c}")</span>
                 break;
         }
@@ -59,7 +59,7 @@
     <td>
         @switch (Data.Account)
         {
-            case Cash_Flow_Projection.Models.Account.Business:
+            case Cash_Flow_Projection.Models.AccountType.Business:
                 <span>@($"{Data.BusinessBalance:c}")</span>
                 break;
         }
