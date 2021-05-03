@@ -49,7 +49,11 @@ namespace Cash_Flow_Projection
                     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 })
-                .AddCookie(o => o.LoginPath = new PathString("/Home/Login"))
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/Home/Login");
+                    options.Cookie.SameSite = SameSiteMode.None;
+                })
                 .AddOpenIdConnect("Auth0", options =>
                 {
                     options.Authority = $"https://{auth0Settings.Domain}";
@@ -100,6 +104,11 @@ namespace Cash_Flow_Projection
             }
 
             app.UseStaticFiles();
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.None
+            });
 
             app.UseRouting();
 
