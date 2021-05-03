@@ -16,9 +16,9 @@ namespace Cash_Flow_Projection.Models
         {
             Thru = thru ?? DateTime.Today.AddMonths(3);
 
-            CheckingBalance = db.Entries.CurrentBalance(Account.Cash);
-            CreditBalance = db.Entries.CurrentBalance(Account.Credit);
-            BusinessBalance = db.Entries.CurrentBalance(Account.Business);
+            CheckingBalance = db.Entries.CurrentBalance(AccountType.Cash);
+            CreditBalance = db.Entries.CurrentBalance(AccountType.Credit);
+            BusinessBalance = db.Entries.CurrentBalance(AccountType.Business);
 
             Entries = db.Entries.SinceBalance(Thru).ToList();
         }
@@ -47,15 +47,15 @@ namespace Cash_Flow_Projection.Models
                 {
                     switch (entry.Account)
                     {
-                        case Account.Cash:
+                        case AccountType.Cash:
                             cash += entry.Amount;
                             break;
 
-                        case Account.Credit:
+                        case AccountType.Credit:
                             credit += entry.Amount;
                             break;
 
-                        case Account.Business:
+                        case AccountType.Business:
                             business += entry.Amount;
                             break;
                     }
@@ -102,17 +102,17 @@ namespace Cash_Flow_Projection.Models
             public String RowClass => Account switch
             {
                 // When cash accounts go negative
-                Account.Cash when CashBalance < 0 => "table-danger",
-                Account.Business when BusinessBalance < 0 => "table-danger",
+                AccountType.Cash when CashBalance < 0 => "table-danger",
+                AccountType.Business when BusinessBalance < 0 => "table-danger",
 
                 // Check against a warning threshold
-                Account.Cash when CashBalance < CashWarningThreshold => "table-warning",
-                Account.Business when BusinessBalance < CashWarningThreshold => "table-warning",
+                AccountType.Cash when CashBalance < CashWarningThreshold => "table-warning",
+                AccountType.Business when BusinessBalance < CashWarningThreshold => "table-warning",
 
-                Account.Credit when Amount < 0 => "table-info", // Credit Card Payments
+                AccountType.Credit when Amount < 0 => "table-info", // Credit Card Payments
 
-                Account.Business when Amount > 0 => "table-info", // Deposits into Business
-                Account.Cash when Amount > 0 => "table-info", // Deposits into Checking
+                AccountType.Business when Amount > 0 => "table-info", // Deposits into Business
+                AccountType.Cash when Amount > 0 => "table-info", // Deposits into Checking
 
                 _ => string.Empty
             };

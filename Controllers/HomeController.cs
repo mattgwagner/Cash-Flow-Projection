@@ -41,7 +41,7 @@ namespace Cash_Flow_Projection.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Balance(Decimal balance, Account account = Account.Cash)
+        public async Task<IActionResult> Balance(Decimal balance, AccountType account = AccountType.Cash)
         {
             var last =
                 db

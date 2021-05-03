@@ -1,6 +1,6 @@
 ﻿namespace Cash_Flow_Projection.Models
 {
-    public enum Account : byte
+    public enum AccountType : byte
     {
         Cash,
 

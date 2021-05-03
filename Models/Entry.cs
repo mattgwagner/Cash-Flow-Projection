@@ -37,6 +37,6 @@ namespace Cash_Flow_Projection.Models
         /// <summary>
         /// Which account this transaction applies to
         /// </summary>
-        public Account Account { get; set; } = Account.Cash;
+        public AccountType Account { get; set; } = AccountType.Cash;
     }
 }

@@ -6,7 +6,7 @@ namespace Cash_Flow_Projection.Models
 {
     public static class Balance
     {
-        public static Decimal CurrentBalance(this IEnumerable<Entry> entries, Account account = Account.Cash)
+        public static Decimal CurrentBalance(this IEnumerable<Entry> entries, AccountType account = AccountType.Cash)
         {
             return GetLastBalanceEntry(entries, account)?.Amount ?? Decimal.Zero;
         }
@@ -24,7 +24,7 @@ namespace Cash_Flow_Projection.Models
                 .OrderBy(entry => entry.Date);
         }
 
-        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, Account account = Account.Cash)
+        public static Entry GetLastBalanceEntry(this IEnumerable<Entry> entries, AccountType account = AccountType.Cash)
         {
             return
                 entries
