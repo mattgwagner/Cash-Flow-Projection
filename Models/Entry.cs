@@ -39,13 +39,4 @@ namespace Cash_Flow_Projection.Models
         /// </summary>
         public Account Account { get; set; } = Account.Cash;
     }
-
-    public enum Account : byte
-    {
-        Cash,
-
-        Credit,
-
-        Business
-    }
 }
