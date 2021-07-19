@@ -13,20 +13,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="5.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.8" />
-    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
-    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
-    <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.*" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.*" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.*" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.*" />
   </ItemGroup>
 
 </Project>
