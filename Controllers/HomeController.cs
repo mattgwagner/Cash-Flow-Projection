@@ -128,7 +128,9 @@ namespace Cash_Flow_Projection.Controllers
                 .AppendLine("PRODID:-//Red-Leg-Dev//Cash Flow Projections//EN")
                 .AppendLine("METHOD:PUBLISH");
 
-            foreach (var entry in db.Entries.SinceBalance(DateTime.Today.AddYears(1)))
+            var after = DateTime.Today.AddDays(-14);
+
+            foreach (var entry in db.Entries.Where(e => after < e.Date))
             {
                 sb = sb.Append(to_ics(entry));
             }
