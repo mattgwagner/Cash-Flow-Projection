@@ -1,9 +1,7 @@
 namespace Cash_Flow_Projection
 {
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
     using Serilog;
     using Serilog.Core;
 
@@ -30,7 +28,6 @@ namespace Cash_Flow_Projection
                            .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
                            .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
                            .Enrich.WithProperty("Version", $"{typeof(Startup).Assembly.GetName().Version}")
-                           .WriteTo.Seq(serverUrl: "https://logs.redleg.app", apiKey: context.Configuration.GetValue<string>("Seq:ApiKey"), controlLevelSwitch: LogLevel)
                            .MinimumLevel.ControlledBy(LogLevel)
                            .CreateLogger();
 
