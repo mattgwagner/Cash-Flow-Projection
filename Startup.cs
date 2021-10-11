@@ -15,6 +15,7 @@ namespace Cash_Flow_Projection
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -89,6 +90,7 @@ namespace Cash_Flow_Projection
             services.AddProgressiveWebApp();
 
             services.AddDbContext<Database>(options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
