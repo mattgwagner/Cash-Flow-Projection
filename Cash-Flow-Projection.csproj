@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="5.*" />
     
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.*" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.*" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.*" />
