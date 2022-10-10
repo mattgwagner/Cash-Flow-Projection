@@ -243,3 +243,5 @@ ModelManifest.xml
 appsettings.Development.json
 *.db
 Properties
+.idea
+.DS_Store
