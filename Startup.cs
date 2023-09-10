@@ -28,51 +28,51 @@ namespace Cash_Flow_Projection
             services.AddOptions();
 
             // Add the Auth0 Settings object so it can be injected
-            services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
+            //         services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
+            //
+            // var auth0Settings = new Auth0Settings { };
+            //
+            // Configuration.GetSection("Auth0").Bind(auth0Settings);
+            //
+            // // Add authentication services
+            //
+            // services
+            //     .AddAuthentication(options =>
+            //     {
+            //         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //     })
+            //     .AddCookie(options =>
+            //     {
+            //         options.LoginPath = new PathString("/Home/Login");
+            //         options.Cookie.SameSite = SameSiteMode.None;
+            //     })
+            //     .AddOpenIdConnect("Auth0", options =>
+            //     {
+            //         options.Authority = $"https://{auth0Settings.Domain}";
+            //
+            //         // Configure the Auth0 Client ID and Client Secret
+            //         options.ClientId = auth0Settings.ClientId;
+            //         options.ClientSecret = auth0Settings.ClientSecret;
+            //
+            //         options.ResponseType = OpenIdConnectResponseType.Code;
+            //
+            //         // Configure the scopes
+            //         options.Scope.Clear();
+            //         options.Scope.Add("profile");
+            //         options.Scope.Add("openid");
+            //         options.Scope.Add("email");
+            //
+            //         // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0
+            //         // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+            //         options.CallbackPath = new PathString("/signin-auth0");
+            //
+            //         // Configure the Claims Issuer to be Auth0
+            //         options.ClaimsIssuer = "Auth0";
+            //     });
 
-            var auth0Settings = new Auth0Settings { };
-
-            Configuration.GetSection("Auth0").Bind(auth0Settings);
-
-            // Add authentication services
-
-            services
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new PathString("/Home/Login");
-                    options.Cookie.SameSite = SameSiteMode.None;
-                })
-                .AddOpenIdConnect("Auth0", options =>
-                {
-                    options.Authority = $"https://{auth0Settings.Domain}";
-
-                    // Configure the Auth0 Client ID and Client Secret
-                    options.ClientId = auth0Settings.ClientId;
-                    options.ClientSecret = auth0Settings.ClientSecret;
-
-                    options.ResponseType = OpenIdConnectResponseType.Code;
-
-                    // Configure the scopes
-                    options.Scope.Clear();
-                    options.Scope.Add("profile");
-                    options.Scope.Add("openid");
-                    options.Scope.Add("email");
-
-                    // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0
-                    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-                    options.CallbackPath = new PathString("/signin-auth0");
-
-                    // Configure the Claims Issuer to be Auth0
-                    options.ClaimsIssuer = "Auth0";
-                });
-
-            services.AddAuthorization();
+            //services.AddAuthorization();
 
             services.AddControllersWithViews();
 
@@ -107,8 +107,8 @@ namespace Cash_Flow_Projection
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.Use(async (context, next) =>
             {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Cash_Flow_Projection.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private const string DateFormat = "yyyyMMddTHHmmssZ";
