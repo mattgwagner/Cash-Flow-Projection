@@ -4,8 +4,7 @@
 
 <h3>
     <span class="update-balance badge badge-success" data-account="cash" data-current="@Model.CheckingBalance">Cash @($"{Model.CheckingBalance:c}")</span>
-    <span class="update-balance badge badge-danger" data-account="credit" data-current="@Model.CreditBalance">Credit @($"{Model.CreditBalance:c}")</span>
-    <span class="update-balance badge badge-warning" data-account="business" data-current="@Model.BusinessBalance">Business @($"{Model.BusinessBalance:c}")</span>
+    <span class="update-balance badge badge-warning" data-account="business" data-current="@Model.BusinessBalance">Annuity @($"{Model.BusinessBalance:c}")</span>
 </h3>
 
 <h6><span class="badge badge-default">Minimum Balance: @($"{Model.MinimumBalance:c}")</span></h6>
@@ -21,8 +20,7 @@
             <th>Account</th>
             <th>Actions</th>
             <th>Checking</th>
-            <th>Credit</th>
-            <th>Business</th>
+            <th>Annuity</th>
         </tr>
     </thead>
 
