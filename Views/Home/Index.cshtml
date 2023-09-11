@@ -51,11 +51,10 @@
 
             data.addColumn('date', 'Date');
             data.addColumn('number', 'Cash ($)');
-            data.addColumn('number', 'Credit ($)');
 
             for (var i = 0; i < result.length; i++)
             {
-                data.addRow([new Date(result[i].Date), result[i].CashBalance + result[i].BusinessBalance, -result[i].CreditBalance]);
+                data.addRow([new Date(result[i].Date), result[i].CashBalance + result[i].BusinessBalance]);
             }
 
             var options = {
