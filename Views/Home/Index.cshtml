@@ -51,10 +51,11 @@
 
             data.addColumn('date', 'Date');
             data.addColumn('number', 'Cash ($)');
+            data.addColumn('number', 'Annuity ($)');
 
             for (var i = 0; i < result.length; i++)
             {
-                data.addRow([new Date(result[i].Date), result[i].CashBalance + result[i].BusinessBalance]);
+                data.addRow([new Date(result[i].Date), result[i].CashBalance, result[i].BusinessBalance]);
             }
 
             var options = {
