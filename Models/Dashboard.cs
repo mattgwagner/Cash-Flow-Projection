@@ -14,7 +14,7 @@ namespace Cash_Flow_Projection.Models
 
         public Dashboard(Database db, DateTime? thru = null)
         {
-            Thru = thru ?? DateTime.Today.AddMonths(6);
+            Thru = thru ?? DateTime.Today.AddYears(3);
 
             CheckingBalance = db.Entries.CurrentBalance(AccountType.Cash);
             CreditBalance = db.Entries.CurrentBalance(AccountType.Credit);
